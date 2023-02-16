@@ -25,7 +25,6 @@ namespace CurriculumService
                 {
                     options.UseMySQL(connectionString);
                 }
-                
             });
             var app = builder.Build();
 
