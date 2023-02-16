@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CurriculumVerifier.Data.DataAnotationModels;
+namespace CurriculumVerifier.Data.Models;
 
 [Table("documentary")]
 [Index("DocumentId", Name = "document_id_UNIQUE", IsUnique = true)]

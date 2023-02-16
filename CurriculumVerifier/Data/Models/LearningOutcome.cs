@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CurriculumVerifier.Data.DataAnotationModels;
+namespace CurriculumVerifier.Data.Models;
 
 [Table("learning_outcome")]
 [Index("CourseId", Name = "FK_LearningOutcome")]

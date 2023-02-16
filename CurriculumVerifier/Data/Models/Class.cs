@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CurriculumVerifier.Data.DataAnotationModels;
+namespace CurriculumVerifier.Data.Models;
 
 [Table("class")]
 [Index("CourseId", "GroupTheory", "GroupLab", "Semester", "AcademicYear", Name = "course_id_group_theory_group_lab_semester_academic_year")]
