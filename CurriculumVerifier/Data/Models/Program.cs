@@ -1,27 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace CurriculumVerifier.Data.Models;
+namespace CurriculumVerifier.Data.DataAnotationModels;
 
+[Table("program")]
+[Index("MajorId", Name = "FK_program_major")]
+[Index("ProgramTypeId", Name = "fk_program_program_type")]
 public partial class Program
 {
+    [Key]
+    [Column("id")]
     public int Id { get; set; }
 
+    [Column("name")]
+    [StringLength(255)]
     public string? Name { get; set; }
 
+    [Column("duration")]
     public int? Duration { get; set; }
 
+    [Column("version")]
+    [StringLength(4)]
     public string? Version { get; set; }
 
+    [Column("major_id")]
     public int? MajorId { get; set; }
 
+    [Column("program_type_id")]
     public int ProgramTypeId { get; set; }
 
+    [Column("valid_from")]
+    [StringLength(255)]
     public string? ValidFrom { get; set; }
 
+    [ForeignKey("MajorId")]
+    [InverseProperty("Programs")]
     public virtual Major? Major { get; set; }
 
+    [InverseProperty("Program")]
     public virtual ICollection<ProgramDocument> ProgramDocuments { get; } = new List<ProgramDocument>();
 
+    [ForeignKey("ProgramTypeId")]
+    [InverseProperty("Programs")]
     public virtual ProgramType ProgramType { get; set; } = null!;
 }
