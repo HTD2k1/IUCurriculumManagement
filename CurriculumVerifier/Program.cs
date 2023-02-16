@@ -19,7 +19,14 @@ namespace CurriculumVerifier
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<IuCurriculumContext>(options =>
-                options.UseMySQL(builder.Configuration.GetConnectionString("IuCurriculum")));
+            {
+                var connectionString = builder.Configuration.GetConnectionString("IuCurriculum");
+                if(connectionString != null)
+                {
+                    options.UseMySQL(connectionString);
+                }
+                
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
