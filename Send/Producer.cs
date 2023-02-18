@@ -20,11 +20,11 @@ namespace Producer
                                  autoDelete: false,
                                  arguments: null);
 
-            //var body = TestCsv();
-            //channel.BasicPublish(exchange: string.Empty,
-            //                        routingKey: "hello",
-            //                        basicProperties: null,
-            //                        body: body);
+            var body = TestCsv();
+            channel.BasicPublish(exchange: string.Empty,
+                                    routingKey: "hello",
+                                    basicProperties: null,
+                                    body: body);
 
             TestWord();
          
@@ -35,7 +35,7 @@ namespace Producer
         private static byte[] TestCsv()
         {
             // Test Csv
-            var testData = CsvHelper.ReadCSV("C:/Users/Admin/source/repos/RabbitMQGettingStarted/Send/data/curriculum_DS_18-22.csv");
+            var testData = CsvHelper.ReadCSV("C:/Users/DAT/source/repos/HTD2k1/RabbitMQGettingStarted/Send/data/curriculum_DS_18-22.csv");
             var years = testData.Select(x => x.year);
             string message = string.Join(" ", years);
             var body = Encoding.UTF8.GetBytes(message);
@@ -45,7 +45,7 @@ namespace Producer
 
         private static void TestWord()
         {
-           DocxHelper.ReadTablesFromWordDocument("C:/Users/Admin/source/repos/RabbitMQGettingStarted/Send/data/CTT-CS-k21-plain.docx");
+           DocxHelper.ReadTablesFromWordDocument("C:/Users/DAT/source/repos/HTD2k1/RabbitMQGettingStarted/Send/data/CTT-CS-k21-plain.docx");
         }
     }
 }
