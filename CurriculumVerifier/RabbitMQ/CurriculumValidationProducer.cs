@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace CurriculumVerifier.RabbitMQ
+namespace CurriculumService.RabbitMQ
 {
     public class CurriculumValidationProducer
     {   

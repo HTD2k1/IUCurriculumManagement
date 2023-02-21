@@ -3,7 +3,7 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using System.Threading.Channels;
 
-namespace CurriculumVerifier.RabbitMQ
+namespace CurriculumService.RabbitMQ
 {
     public class NewCurriculumConsumer
     {

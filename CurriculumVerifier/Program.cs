@@ -1,10 +1,10 @@
 using MySqlConnector;
 using Microsoft.Extensions.Configuration;
-using CurriculumVerifier.Data.Models;
+using CurriculumService.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
-namespace CurriculumVerifier
+namespace CurriculumService
 {
     public class Program
     {

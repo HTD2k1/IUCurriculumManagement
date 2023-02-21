@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
-using CurriculumVerifier.Data.Models;
-namespace CurriculumVerifier.Controllers
+using CurriculumService.Models;
+using CurriculumService.Data;
+namespace CurriculumService.Controllers
 {
     [ApiController]
     [Route("[controller]")]

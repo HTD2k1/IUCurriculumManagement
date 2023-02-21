@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer", "Receive\Consume
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer", "Send\Producer.csproj", "{C22A33EC-0689-4B19-B26C-A07F36444CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurriculumVerifier", "CurriculumVerifier\CurriculumVerifier.csproj", "{BA1F9FDE-97A7-4692-8194-F9C3B55045DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumService", "CurriculumVerifier\CurriculumService.csproj", "{BA1F9FDE-97A7-4692-8194-F9C3B55045DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
