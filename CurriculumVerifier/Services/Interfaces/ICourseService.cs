@@ -1,10 +1,8 @@
-﻿
+﻿using Microsoft.AspNetCore.Identity;
 
-using Microsoft.AspNetCore.Identity;
-
-namespace CurriculumService.Interfaces
+namespace CurriculumService.Services.Interfaces
 {
-    public interface CourseService
+    public interface ICourseService
     {
         public IEnumerable<Course> GetAllCourses();
         public Course GetCourseById(string id);

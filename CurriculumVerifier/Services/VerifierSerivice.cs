@@ -1,10 +1,13 @@
-﻿using CurriculumService.Interfaces;
-using CurriculumService.Models;
+﻿using CurriculumService.Models;
+using CurriculumService.Services.Interfaces;
 
 namespace CurriculumService.Services
 {
-    public class VerifierSerivice: IVerifierService
+    public class SemesterCurriculumVerifierService: IVerifierService
     {
-        public Curri VerifyNewCurriculum()
+        public void Verify()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -15,4 +15,4 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using Newtonsoft.Json;
 global using CurriculumService.Models;
-global using CurriculumService.Interfaces;
+global using CurriculumService.Services.Interfaces;

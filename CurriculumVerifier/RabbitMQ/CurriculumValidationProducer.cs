@@ -2,9 +2,9 @@
 
 namespace CurriculumService.RabbitMQ
 {
-    public class CurriculumValidationProducer
+    public class CurriculumValidationProducer: IRabbitMQProducer
     {   
-        public void Produce()
+        public void SendMessage()
         {
             var factory = new ConnectionFactory { HostName = "localhost" };
             using var connection = factory.CreateConnection();

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CurriculumService.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CurriculumService.Data
 {
@@ -15,7 +12,6 @@ namespace CurriculumService.Data
             : base(options)
         {
         }
-
         public virtual DbSet<Account> Accounts { get; set; }
 
         public virtual DbSet<AsiinAssessmentTool> AsiinAssessmentTools { get; set; }
@@ -475,7 +471,7 @@ namespace CurriculumService.Data
                 entity.HasKey(e => e.Id).HasName("PRIMARY");
             });
 
-            modelBuilder.Entity<Program>(entity =>
+            modelBuilder.Entity<CurriculumService.Models.Program>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PRIMARY");
 
