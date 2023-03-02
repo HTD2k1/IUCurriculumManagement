@@ -2,11 +2,11 @@
 using System.Text;
 using CsvHelper.Expressions;
 using RabbitMQ.Client;
-using static Producer.CsvHelper;
+using static CurriculumProducer.CsvHelper;
 
-namespace Producer
+namespace CurriculumProducer
 {
-    public class Producer
+    public class CurriculumProducer
     {
         public static void Main(string[] args)
         {
@@ -14,7 +14,7 @@ namespace Producer
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(queue: "hello",
+            channel.QueueDeclare(queue: "curriculum.created",
                                  durable: false,
                                  exclusive: false,
                                  autoDelete: false,
@@ -22,7 +22,7 @@ namespace Producer
 
             var body = TestCsv();
             channel.BasicPublish(exchange: string.Empty,
-                                    routingKey: "hello",
+                                    routingKey: "curriculum.created",
                                     basicProperties: null,
                                     body: body);
 
@@ -49,4 +49,3 @@ namespace Producer
         }
     }
 }
-

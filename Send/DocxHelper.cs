@@ -4,13 +4,14 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
-
-namespace Producer
+using CurriculumProducer.DTOs;
+namespace CurriculumProducer
 {
     public class DocxHelper
     {
-        public static void ReadTablesFromWordDocument(string fileName)
-        {
+        public static List<CourseDTO> ReadTablesFromWordDocument(string fileName)
+        {   
+            var courses = new List<CourseDTO>();
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(fileName, false))
             {
                 MainDocumentPart mainPart = wordDocument.MainDocumentPart;
@@ -18,25 +19,24 @@ namespace Producer
 
                 foreach (Table table in tables)
                 {
-                    Console.WriteLine("=====NEW TABLE======");
                     ReadTable(table);
                 }
             }
+            return courses;
         }
 
         static void ReadTable(Table table)
         {
             foreach (TableRow tableRow in table.Elements<TableRow>())
             {
-                Console.WriteLine();
                 ReadTableRow(tableRow);
             }
         }
 
-        static void ReadTableRow(TableRow tableRow)
+        static CourseDTO ReadTableRow(TableRow tableRow)
         {
             foreach (TableCell tableCell in tableRow.Elements<TableCell>())
-            {
+            {                            
                 ReadTableCell(tableCell);
             }
         }
