@@ -18,9 +18,6 @@ namespace CurriculumService.RabbitMQ
             channel.QueueDeclare(queue: "curriculum.decline", durable: true, exclusive: false, autoDelete: false);
             channel.BasicPublish(exchange: string.Empty, routingKey: "curriculum.declined");
 
-
-
         }
-
     }
 }

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer", "Send\Producer.c
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumService", "CurriculumVerifier\CurriculumService.csproj", "{BA1F9FDE-97A7-4692-8194-F9C3B55045DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFSerivce", "PDFSerivce\PDFSerivce.csproj", "{D7D36991-8F99-483E-95C2-4861CF9878E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFService", "PDFSerivce\PDFService.csproj", "{D7D36991-8F99-483E-95C2-4861CF9878E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
