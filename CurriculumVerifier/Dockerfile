@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["CurriculumVerifier/CurriculumVerifier.csproj", "CurriculumVerifier/"]
-RUN dotnet restore "CurriculumVerifier/CurriculumVerifier.csproj"
+COPY ["CurriculumService/CurriculumService.csproj", "CurriculumService/"]
+RUN dotnet restore "CurriculumService/CurriculumService.csproj"
 COPY . .
-WORKDIR "/src/CurriculumVerifier"
-RUN dotnet build "CurriculumVerifier.csproj" -c Release -o /app/build
+WORKDIR "/src/CurriculumService"
+RUN dotnet build "CurriculumService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "CurriculumVerifier.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "CurriculumService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CurriculumVerifier.dll"]
+ENTRYPOINT ["dotnet", "CurriculumService.dll"]

@@ -33,7 +33,7 @@ namespace CurriculumProducer
             }
         }
 
-        static CourseDTO ReadTableRow(TableRow tableRow)
+        static void ReadTableRow(TableRow tableRow)
         {
             foreach (TableCell tableCell in tableRow.Elements<TableCell>())
             {                            

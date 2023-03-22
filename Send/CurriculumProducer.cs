@@ -14,19 +14,23 @@ namespace CurriculumProducer
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(queue: "curriculum.created",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+            //channel.QueueDeclare(queue: "curriculum-created",
+            //                     durable: false,
+            //                     exclusive: false,
+            //                     autoDelete: false,
+            //                     arguments: null);
+            for (int i = 0 ; i < 20; i++)
+            {
+                var body = $" Testing msgs {i}";
 
-            var body = TestCsv();
-            channel.BasicPublish(exchange: string.Empty,
-                                    routingKey: "curriculum.created",
-                                    basicProperties: null,
-                                    body: body);
+                channel.BasicPublish(exchange: string.Empty,
+                                        routingKey: "curriculum-created",
+                                        basicProperties: null,
+                                        body: Encoding.UTF8.GetBytes(body));
+            }
+            
 
-            TestWord();
+            //TestWord();
          
             Console.WriteLine(" Press [enter] to exit.");
             Console.ReadLine();

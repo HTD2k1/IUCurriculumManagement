@@ -11,7 +11,7 @@ namespace CurriculumService.RabbitMQ
             using var channel = connection.CreateModel();
 
             // Accepted queue declaration
-            channel.QueueDeclare(queue: "curriculum.accepted", durable: true, exclusive: false, autoDelete: false);
+            channel.QueueDeclare(queue: "curriculum-accepted", durable: true, exclusive: false, autoDelete: false);
             channel.BasicPublish(exchange: string.Empty, routingKey: "curriculum.accepted");
 
             // Decline queue declaration
@@ -19,5 +19,5 @@ namespace CurriculumService.RabbitMQ
             channel.BasicPublish(exchange: string.Empty, routingKey: "curriculum.declined");
 
         }
-    }
+    }   
 }

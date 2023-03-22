@@ -12,11 +12,6 @@ namespace Consumer {
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(queue: "hello",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
 
             Console.WriteLine(" [*] Waiting for messages.");
 
@@ -29,14 +24,13 @@ namespace Consumer {
                 Console.WriteLine($" [x] Received {message}");
                 var stringArr = message.Split(" ");
                 
-                foreach(var item in stringArr ) {
-                    sum += int.Parse(item);
-                }
-                Console.WriteLine($"Total course updated : {sum}");
             };
-            channel.BasicConsume(queue: "hello",
-                                 autoAck: true,
-                                 consumer: consumer);  
+            for ( int i = 0; i < 20; i++ ) {
+                channel.BasicConsume(queue: "curriculum-created",
+                                     autoAck: true,
+                                     consumer: consumer);
+            }
+            
             
             Console.WriteLine(" Press [enter] to exit.");
             Console.ReadLine();
