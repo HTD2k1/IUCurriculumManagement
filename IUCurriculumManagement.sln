@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumService", "Curric
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFService", "PDFService\PDFService.csproj", "{AC888242-BCBC-4482-8D4B-6ACC9D3179BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "EmailSerivice\NotificationService.csproj", "{51C88103-9E46-4D28-9E5B-ADCB25D22DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebPageService", "WebPageService\WebPageService.csproj", "{340C65B1-E163-40CA-A6AA-8D01187A4BB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{AC888242-BCBC-4482-8D4B-6ACC9D3179BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC888242-BCBC-4482-8D4B-6ACC9D3179BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC888242-BCBC-4482-8D4B-6ACC9D3179BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C88103-9E46-4D28-9E5B-ADCB25D22DEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C88103-9E46-4D28-9E5B-ADCB25D22DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C88103-9E46-4D28-9E5B-ADCB25D22DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C88103-9E46-4D28-9E5B-ADCB25D22DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{340C65B1-E163-40CA-A6AA-8D01187A4BB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{340C65B1-E163-40CA-A6AA-8D01187A4BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{340C65B1-E163-40CA-A6AA-8D01187A4BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{340C65B1-E163-40CA-A6AA-8D01187A4BB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
