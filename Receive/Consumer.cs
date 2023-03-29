@@ -31,7 +31,6 @@ namespace Consumer {
                                      consumer: consumer);
             }
             
-            
             Console.WriteLine(" Press [enter] to exit.");
             Console.ReadLine();
         }

@@ -10,15 +10,10 @@ namespace CurriculumProducer
     {
         public static void Main(string[] args)
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
+            var factory = new ConnectionFactory { HostName="localhost" };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            //channel.QueueDeclare(queue: "curriculum-created",
-            //                     durable: false,
-            //                     exclusive: false,
-            //                     autoDelete: false,
-            //                     arguments: null);
             for (int i = 0 ; i < 20; i++)
             {
                 var body = $" Testing msgs {i}";
@@ -29,7 +24,6 @@ namespace CurriculumProducer
                                         body: Encoding.UTF8.GetBytes(body));
             }
             
-
             //TestWord();
          
             Console.WriteLine(" Press [enter] to exit.");

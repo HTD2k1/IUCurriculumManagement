@@ -21,11 +21,3 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CurriculumService.dll"]
 
-FROM rabbitmq:3.11.11-management
-# Enable RabbitMQ plugins
-RUN rabbitmq-plugins enable --offline rabbitmq_management rabbitmq_management_agent rabbitmq_federation_management
-
-# Create queues
-RUN rabbitmqadmin declare queue name=curriculum-created durable=true
-RUN rabbitmqadmin declare queue name=curriculum-accepted durable=true
-RUN rabbitmqadmin declare queue name=curriculum-declined durable=true
