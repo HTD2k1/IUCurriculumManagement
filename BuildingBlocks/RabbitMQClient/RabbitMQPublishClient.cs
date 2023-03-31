@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Connections;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using System.Text;
 
-namespace CurriculumMeditator
+namespace RabbitMQClient
 {
     public class RabbitMQPublishClient
     {

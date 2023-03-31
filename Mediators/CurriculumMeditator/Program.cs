@@ -46,7 +46,7 @@ namespace CurriculumMeditator
                 RabbitMQPublishClient.Publish($"{formFile.FileName}");
                 return Results.Ok();
             })
-            .WithName("Post");
+            .WithName("CreateCurriculum");
 
             app.Run();
         }
