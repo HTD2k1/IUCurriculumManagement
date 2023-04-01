@@ -1,8 +1,8 @@
 ﻿
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 
-
-namespace CurriculumMeditator
+namespace BlogStorageService
 {
     public class BlobStorageService
     {

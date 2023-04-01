@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-
+using RabbitMQClient;
+using BlogStorageService;
 namespace CurriculumMeditator
 {
     public class Program
@@ -36,14 +37,14 @@ namespace CurriculumMeditator
             app.MapPost("/create-currriculum",  async (HttpContext httpContext) =>
             {
                 var formFile = httpContext.Request.Form.Files.FirstOrDefault();
-
                 if (formFile == null || formFile.Length == 0)
                 {
                     return Results.BadRequest();
                 }
 
                 await BlobStorageService.UploadFiles(formFile);
-                RabbitMQPublishClient.Publish($"{formFile.FileName}");
+
+                RabbitMQPublishClient.Publish();
                 return Results.Ok();
             })
             .WithName("CreateCurriculum");

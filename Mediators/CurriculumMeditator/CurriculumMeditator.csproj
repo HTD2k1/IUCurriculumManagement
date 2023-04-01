@@ -15,4 +15,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\BlogStorageService\BlogStorageService.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\RabbitMQClient\RabbitMQClient.csproj" />
+  </ItemGroup>
+
 </Project>
