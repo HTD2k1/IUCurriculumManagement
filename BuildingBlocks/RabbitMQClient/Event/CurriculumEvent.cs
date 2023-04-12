@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 namespace RabbitMQClient.Event
 {
-    public record CurriculumEvent: Event
+    public record CurriculumEvent: ICurriculumEvent
     {
         public CurriculumEventType EventType;
-        public string Payload { get; init; }
+        public string Payload { get; set; }
+        public Guid Id { get; private init; }
+        public DateTime DateTime { get; private init; }
 
-        public CurriculumEvent(CurriculumEventType type, string payLoad)
+        public CurriculumEvent(CurriculumEventType type, string payLoad, string dateTime=null!)
         {
+            Id = Guid.NewGuid();
+            DateTime = (dateTime == null) ? DateTime.Now : DateTime.Parse(dateTime);
             EventType = type;
             Payload= payLoad;
         }

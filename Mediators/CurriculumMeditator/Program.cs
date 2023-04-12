@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQClient;
+using RabbitMQClient.Event;
 using BlogStorageService;
 namespace CurriculumMeditator
 {
@@ -15,7 +16,7 @@ namespace CurriculumMeditator
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddSingleton<IRabbitMQConnection>()
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -27,14 +28,9 @@ namespace CurriculumMeditator
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthorization(); 
 
-            var summaries = new[]
-            {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-            app.MapPost("/create-currriculum",  async (HttpContext httpContext) =>
+            app.MapPost("/create-currriculum", async (HttpContext httpContext) =>
             {
                 var formFile = httpContext.Request.Form.Files.FirstOrDefault();
                 if (formFile == null || formFile.Length == 0)
@@ -44,7 +40,8 @@ namespace CurriculumMeditator
 
                 await BlobStorageService.UploadFiles(formFile);
 
-                RabbitMQPublishClient.Publish();
+                var newEvent = new CurriculumEvent(CurriculumEventType.created, formFile.FileName); 
+                RabbitMQBaseClient.Publish(newEvent);
                 return Results.Ok();
             })
             .WithName("CreateCurriculum");

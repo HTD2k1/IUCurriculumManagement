@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace RabbitMQClient
 {
-    public class RabbitMQConsumeClient
+    public interface IRabbitMQClient
     {
-
     }
 }
