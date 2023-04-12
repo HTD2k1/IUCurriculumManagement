@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\BlogStorageService\BlogStorageService.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\BlobStorageService\BlobStorageService.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\RabbitMQClient\RabbitMQClient.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQClient;
 using RabbitMQClient.Event;
-using BlogStorageService;
+using BlobStorageService;
+using RabbitMQ.Client;
+
 namespace CurriculumMeditator
 {
     public class Program
@@ -12,11 +14,19 @@ namespace CurriculumMeditator
 
             // Add services to the container.
             builder.Services.AddAuthorization();
+            builder.Logging.AddConsole();   
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<IRabbitMQConnection>()
+            builder.Services.AddSingleton<IRabbitMQConnection >( _ =>
+            {
+                var configuration = builder.Configuration;
+                var factory = new ConnectionFactory { HostName = builder.Configuration.GetValue<string>("RabbitMQConnection:HostName") };
+                return new RabbitMQDefaultConnection(factory);
+            });
+            builder.Services.AddScoped<IBlobStorageService, BlobStorageService.BlobStorageService>();
+            builder.Services.AddScoped<IRabbitMQClient,RabbitMQBaseClient>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -30,19 +40,28 @@ namespace CurriculumMeditator
 
             app.UseAuthorization(); 
 
-            app.MapPost("/create-currriculum", async (HttpContext httpContext) =>
+            app.MapPost("/create-currriculum", async (HttpContext httpContext, IRabbitMQClient rabbitMQClient, IBlobStorageService blobService) =>
             {
-                var formFile = httpContext.Request.Form.Files.FirstOrDefault();
-                if (formFile == null || formFile.Length == 0)
+                try
                 {
-                    return Results.BadRequest();
+                    var formFile = httpContext.Request.Form.Files.FirstOrDefault();
+                    if (formFile == null || formFile.Length == 0)
+                    {
+                        return Results.BadRequest();
+                    }
+
+                    await blobService.UploadFiles(formFile);
+
+                    var newEvent = new CurriculumEvent(CurriculumEventType.created, formFile.FileName);
+                    rabbitMQClient.Publish(newEvent);
+                    return Results.Ok();
+                }
+                catch(Exception ex)
+                {   
+                    
+                    return Results.BadRequest(ex.ToString());  
                 }
 
-                await BlobStorageService.UploadFiles(formFile);
-
-                var newEvent = new CurriculumEvent(CurriculumEventType.created, formFile.FileName); 
-                RabbitMQBaseClient.Publish(newEvent);
-                return Results.Ok();
             })
             .WithName("CreateCurriculum");
 

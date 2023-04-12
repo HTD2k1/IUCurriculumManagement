@@ -10,14 +10,14 @@ namespace RabbitMQClient
     public class RabbitMQDefaultConnection: IRabbitMQConnection
     {
         private readonly IConnectionFactory _factory;
-        private readonly IConnection _connection;
         private readonly int _retryCount;
+        private IConnection _connection;
         public bool Disposed;
 
-        public RabbitMQDefaultConnection(IConnectionFactory factory, IConnection connection, int retryCount = 5) { 
+        public RabbitMQDefaultConnection(IConnectionFactory factory, int retryCount = 5) { 
             _factory= factory ?? throw new ArgumentNullException(nameof(factory));
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _retryCount= retryCount;
+            _connection = factory.CreateConnection();   
         }
 
         public bool IsConnected => _connection is { IsOpen: true } && Disposed;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RabbitMQClient.Event;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace RabbitMQClient
 {
     public interface IRabbitMQClient
     {
+        public void Publish(ICurriculumEvent @event);
+        public void Consume(ICurriculumEvent @event);
     }
 }

@@ -6,10 +6,8 @@ using Newtonsoft.Json;
 
 namespace RabbitMQClient
 {
-    public class RabbitMQBaseClient
+    public class RabbitMQBaseClient: IRabbitMQClient
     {
-   
-        
         private readonly IRabbitMQConnection _rabbitMQConnection;
         public RabbitMQBaseClient(IRabbitMQConnection rabbitMQConnection)
         {
