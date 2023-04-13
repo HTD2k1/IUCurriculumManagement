@@ -3,6 +3,9 @@ using Microsoft.Extensions.Configuration;
 using CurriculumService.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using RabbitMQ.Client;
+using RabbitMQService;
+using BlobStorageService;
 
 namespace CurriculumService
 {
@@ -15,9 +18,18 @@ namespace CurriculumService
             // Add services to the container.
 
             builder.Services.AddControllers();
-     
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
+            builder.Services.AddSingleton<IRabbitMQConnection, RabbitMQDefaultConnection>();
+
+            builder.Services.AddScoped<IBlobStorageService, BlobStorageService.BlobStorageService>();
+            builder.Services.AddSingleton<IRabbitMQService, RabbitMQService.RabbitMQService>();
+            builder.Services.AddHostedService<RabbitMQListenerService>();
             builder.Services.AddDbContext<IuCurriculumContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("IuCurriculum");

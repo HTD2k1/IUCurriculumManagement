@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meditators", "Meditators", "{6FA1F604-D298-4FC8-8DF8-FDDB68E90CE4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQClient", "BuildingBlocks\RabbitMQClient\RabbitMQClient.csproj", "{90507631-66E1-4C70-8309-B336792F1DBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQService", "BuildingBlocks\RabbitMQClient\RabbitMQService.csproj", "{90507631-66E1-4C70-8309-B336792F1DBA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumMeditator", "Mediators\CurriculumMeditator\CurriculumMeditator.csproj", "{C05DCE53-CFA4-439A-9A68-6510576F44DB}"
 EndProject
