@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using RabbitMQClient;
-using RabbitMQClient.Event;
+using RabbitMQService;
+using RabbitMQService.Event;
 using BlobStorageService;
 using RabbitMQ.Client;
-
+using Microsoft.Extensions.Logging;
 namespace CurriculumMeditator
 {
     public class Program
@@ -14,20 +14,21 @@ namespace CurriculumMeditator
 
             // Add services to the container.
             builder.Services.AddAuthorization();
-            builder.Logging.AddConsole();   
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<IRabbitMQConnection >( _ =>
-            {
-                var configuration = builder.Configuration;
-                var factory = new ConnectionFactory { HostName = builder.Configuration.GetValue<string>("RabbitMQConnection:HostName") };
-                return new RabbitMQDefaultConnection(factory);
-            });
+            builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
+            builder.Services.AddSingleton<IRabbitMQConnection, RabbitMQDefaultConnection>();
+
             builder.Services.AddScoped<IBlobStorageService, BlobStorageService.BlobStorageService>();
-            builder.Services.AddScoped<IRabbitMQClient,RabbitMQBaseClient>();
+            builder.Services.AddSingleton<IRabbitMQService,RabbitMQService.RabbitMQService>();
             var app = builder.Build();
+
+           
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -37,10 +38,9 @@ namespace CurriculumMeditator
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization(); 
 
-            app.MapPost("/create-currriculum", async (HttpContext httpContext, IRabbitMQClient rabbitMQClient, IBlobStorageService blobService) =>
+            app.MapPost("/create-currriculum", async (HttpContext httpContext, IRabbitMQService rabbitMQService, IBlobStorageService blobService, ILogger<Program> logger) =>
             {
                 try
                 {
@@ -49,19 +49,17 @@ namespace CurriculumMeditator
                     {
                         return Results.BadRequest();
                     }
-
                     await blobService.UploadFiles(formFile);
 
-                    var newEvent = new CurriculumEvent(CurriculumEventType.created, formFile.FileName);
-                    rabbitMQClient.Publish(newEvent);
+                    var newEvent = new CurriculumEvent(CurriculumEventType.processed, formFile.FileName);
+                    rabbitMQService.PublishEvent(newEvent);
+                    logger.LogInformation($"New event {newEvent.Id} : {newEvent.EventType}");
                     return Results.Ok();
                 }
                 catch(Exception ex)
                 {   
-                    
                     return Results.BadRequest(ex.ToString());  
                 }
-
             })
             .WithName("CreateCurriculum");
 
