@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RabbitMQClient.Event
+namespace RabbitMQService.Event
 {
     public interface ICurriculumEvent
     {
