@@ -1,5 +1,6 @@
 ﻿using CurriculumService.Models;
 using CurriculumService.Services.Interfaces;
+using Microsoft.AspNetCore.Routing.Tree;
 
 namespace CurriculumService.Services
 {
@@ -9,5 +10,11 @@ namespace CurriculumService.Services
         {
             throw new NotImplementedException();
         }
+
+        public bool ValidateNewCurriculum()
+        {
+            return true;
+        }
     }
 }
+    

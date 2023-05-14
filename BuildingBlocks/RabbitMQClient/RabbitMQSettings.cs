@@ -14,5 +14,7 @@ namespace RabbitMQService
         public string Password { get; set; }
         public string QueueName { get; set; }
         public string ServiceName { get; set; }
+        public List<string> PublishQueues { get; set; }  
+        public List<string> SubscribeQueues { get; set; }
     }
 }
