@@ -17,6 +17,7 @@ namespace RabbitMQService
         {
             _rabbitMQConnection = rabbitMQConnection ?? throw new ArgumentNullException(nameof(rabbitMQConnection));   
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger.LogInformation("RabbitMQListenerService Injected Logger");
         }
        public void PublishEvent(ICurriculumEvent newEvent)
         {
@@ -41,8 +42,6 @@ namespace RabbitMQService
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                
-                Console.WriteLine(message.ToString());
             };
         }
 
@@ -53,14 +52,17 @@ namespace RabbitMQService
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
+                _logger.LogInformation(message.ToString());
                 await ProcessMessageAsync(message);
             };
-            _rabbitMQConnection.Channel.BasicConsume(queue: _rabbitMQConnection.Settings.QueueName, autoAck: true, consumer: consumer);
+            foreach (var queue in _rabbitMQConnection.Settings.SubscribeQueues) {
+                _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
+            }
         }
         public async Task ProcessMessageAsync(string message)
         {
             // Process the message and do something with it
-            var consumedEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
+            //var consumedEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
            _logger.LogInformation($"Received: {message}");
         }
          

@@ -6,7 +6,6 @@ using System.Configuration;
 using RabbitMQ.Client;
 using RabbitMQService;
 using BlobStorageService;
-using RabbitMQService;
 namespace CurriculumService
 {
     public class Program
