@@ -6,6 +6,9 @@ using System.Configuration;
 using RabbitMQ.Client;
 using RabbitMQService;
 using BlobStorageService;
+using RabbitMQService.Interfaces;
+using CurriculumService.Services;
+
 namespace CurriculumService
 {
     public class Program
@@ -28,6 +31,7 @@ namespace CurriculumService
 
             builder.Services.AddScoped<IBlobStorageService, BlobStorageService.BlobStorageService>();
             builder.Services.AddSingleton<IRabbitMQService, RabbitMQService.RabbitMQService>();
+            builder.Services.AddTransient<IMessageProcessor, SemesterCurriculumVerifierService>();
             builder.Services.AddHostedService<RabbitMQListenerService>();
             builder.Services.AddDbContext<IuCurriculumContext>(options =>
             {

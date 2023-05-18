@@ -4,7 +4,6 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
-using CurriculumProducer.DTOs;
 namespace CurriculumProducer
 {
     public class DocxHelper

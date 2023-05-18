@@ -6,20 +6,29 @@ using Newtonsoft.Json;
 using System.Runtime;
 using System.Threading.Channels;
 using Microsoft.Extensions.Logging;
+using RabbitMQService.Interfaces;
 
 namespace RabbitMQService
 {
     public class RabbitMQService: IRabbitMQService
     {
         private readonly IRabbitMQConnection _rabbitMQConnection;
-        private readonly ILogger<RabbitMQService> _logger;   
-        public RabbitMQService(IRabbitMQConnection rabbitMQConnection, ILogger<RabbitMQService> logger)
+        private readonly ILogger<RabbitMQService> _logger;
+        private readonly IMessageProcessor? _messageProcessor;
+        public RabbitMQService(IRabbitMQConnection rabbitMQConnection,IMessageProcessor processor, ILogger<RabbitMQService> logger)
         {
             _rabbitMQConnection = rabbitMQConnection ?? throw new ArgumentNullException(nameof(rabbitMQConnection));   
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _logger.LogInformation("RabbitMQListenerService Injected Logger");
+            _messageProcessor = processor ?? throw new ArgumentNullException(nameof(processor));
         }
-       public void PublishEvent(ICurriculumEvent newEvent)
+        public RabbitMQService(IRabbitMQConnection rabbitMQConnection, ILogger<RabbitMQService> logger)
+        {
+            _rabbitMQConnection = rabbitMQConnection ?? throw new ArgumentNullException(nameof(rabbitMQConnection));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger.LogInformation("RabbitMQListenerService Injected Logger");
+        }
+        public void PublishEvent(ICurriculumEvent newEvent)
         {
             var channel = _rabbitMQConnection.CreateChannel();
             var queueName = newEvent.GetQueueName();
@@ -47,23 +56,16 @@ namespace RabbitMQService
 
         public void RegisterConsumer()
         {
-            var consumer = new AsyncEventingBasicConsumer(_rabbitMQConnection.Channel);
+            var consumer = new EventingBasicConsumer(_rabbitMQConnection.Channel);
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                _logger.LogInformation(message.ToString());
-                await ProcessMessageAsync(message);
+                await _messageProcessor.ProcessMessageAsync(message);
             };
             foreach (var queue in _rabbitMQConnection.Settings.SubscribeQueues) {
                 _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
             }
-        }
-        public async Task ProcessMessageAsync(string message)
-        {
-            // Process the message and do something with it
-            //var consumedEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
-           _logger.LogInformation($"Received: {message}");
         }
          
         public void Dispose()

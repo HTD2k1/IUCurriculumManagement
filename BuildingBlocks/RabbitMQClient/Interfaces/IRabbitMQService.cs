@@ -5,14 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RabbitMQService
+namespace RabbitMQService.Interfaces
 {
-    public interface IRabbitMQService: IDisposable
+    public interface IRabbitMQService : IDisposable
     {
         public void PublishEvent(ICurriculumEvent @event);
         public void ConsumeEvent(ICurriculumEvent @event);
         public void RegisterConsumer();
-
-        public Task ProcessMessageAsync(string message);
     }
 }

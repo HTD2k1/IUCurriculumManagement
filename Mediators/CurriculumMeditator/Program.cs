@@ -4,6 +4,8 @@ using RabbitMQService.Event;
 using BlobStorageService;
 using RabbitMQ.Client;
 using Microsoft.Extensions.Logging;
+using RabbitMQService.Interfaces;
+
 namespace CurriculumMeditator
 {
     public class Program

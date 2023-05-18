@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RabbitMQService
+namespace RabbitMQService.Interfaces
 {
-    public interface IRabbitMQConnection: IDisposable
+    public interface IRabbitMQConnection : IDisposable
     {
         public bool IsConnected { get; }
         public RabbitMQSettings Settings { get; }
         public IModel Channel { get; }
-        public IModel CreateChannel ();
+        public IModel CreateChannel();
     }
 }
