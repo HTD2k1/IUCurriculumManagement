@@ -26,7 +26,7 @@ namespace RabbitMQService
         {
             _rabbitMQConnection = rabbitMQConnection ?? throw new ArgumentNullException(nameof(rabbitMQConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _logger.LogInformation("RabbitMQListenerService Injected Logger");
+            _logger.LogInformation("RabbitMQListenerService Injected Logger from RabbitMQService");
         }
         public void PublishEvent(ICurriculumEvent newEvent)
         {
@@ -54,20 +54,22 @@ namespace RabbitMQService
             };
         }
 
-        public void RegisterConsumer()
+        public async Task RegisterConsumer()
         {
             var consumer = new EventingBasicConsumer(_rabbitMQConnection.Channel);
+
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 await _messageProcessor.ProcessMessageAsync(message);
             };
-            foreach (var queue in _rabbitMQConnection.Settings.SubscribeQueues) {
+            foreach (var queue in _rabbitMQConnection.Settings.SubscribeQueues)
+            {
                 _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
             }
         }
-         
+
         public void Dispose()
         {
             _rabbitMQConnection.Dispose();  

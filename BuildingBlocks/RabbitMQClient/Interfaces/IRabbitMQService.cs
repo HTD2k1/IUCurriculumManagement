@@ -11,6 +11,6 @@ namespace RabbitMQService.Interfaces
     {
         public void PublishEvent(ICurriculumEvent @event);
         public void ConsumeEvent(ICurriculumEvent @event);
-        public void RegisterConsumer();
+        public Task RegisterConsumer();
     }
 }

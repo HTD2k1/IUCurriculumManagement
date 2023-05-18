@@ -12,20 +12,19 @@ namespace RabbitMQService
     public class RabbitMQListenerService : BackgroundService
     {
         private readonly IRabbitMQService _rabbitMQService;
-        private readonly ILogger<RabbitMQService> _logger;
+        private readonly ILogger<RabbitMQListenerService> _logger;
 
-        public RabbitMQListenerService(IRabbitMQService service, ILogger<RabbitMQService> logger)
+        public RabbitMQListenerService(IRabbitMQService service, ILogger<RabbitMQListenerService> logger)
         {
             _rabbitMQService = service;
             _logger = logger;
             _logger.LogInformation("RabbitMQListenerService Injected Logger");
         }
-        protected override Task ExecuteAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Background service is running at: {time}", DateTimeOffset.Now);
             cancellationToken.ThrowIfCancellationRequested();
-            _rabbitMQService.RegisterConsumer();
-           
-            return Task.CompletedTask;
+            await _rabbitMQService.RegisterConsumer();
         }
     }
 }
