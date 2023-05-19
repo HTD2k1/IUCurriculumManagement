@@ -2,6 +2,7 @@
 using CurriculumService.Services.Interfaces;
 using Microsoft.AspNetCore.Routing.Tree;
 using RabbitMQService.Interfaces;
+using CurriculumService.Helpers;
 
 namespace CurriculumService.Services
 {
@@ -10,6 +11,10 @@ namespace CurriculumService.Services
         private readonly IMessageProcessor _messageProcessor;   
         private readonly ILogger<SemesterCurriculumVerifierService> _logger;
 
+        public async Task ProcessMessageAsync(string message)
+        {
+            _logger.LogInformation(message);
+        }
         public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger)
         {
             _logger = logger;
@@ -19,9 +24,10 @@ namespace CurriculumService.Services
         {
             throw new NotImplementedException();
         }
-
-        public async Task ProcessMessageAsync(string message) { 
-           _logger.LogInformation(message);
+        public void DocumentHandler()
+        {   
+            //DocxHelper.ReadTablesFromWordDocument()
+            throw new NotImplementedException();
         }
         public bool ValidateNewCurriculum()
         {

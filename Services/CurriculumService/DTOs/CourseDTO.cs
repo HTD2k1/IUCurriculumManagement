@@ -11,11 +11,8 @@ namespace CurriculumService.DTOs
 
         [StringLength(255)]
         public string? CourseName { get; set; }
-
+         
         [StringLength(39)]
         public string? Credit { get; set; }
-
-        [StringLength(259)]
-        public string? Program { get; set; }
     }
 }

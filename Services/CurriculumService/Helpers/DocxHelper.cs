@@ -1,15 +1,15 @@
-﻿
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
-namespace CurriculumProducer
+
+namespace CurriculumService.Helpers
 {
     public class DocxHelper
     {
         public static List<CourseDTO> ReadTablesFromWordDocument(string fileName)
-        {   
+        {
             var courses = new List<CourseDTO>();
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(fileName, false))
             {
@@ -35,7 +35,7 @@ namespace CurriculumProducer
         static void ReadTableRow(TableRow tableRow)
         {
             foreach (TableCell tableCell in tableRow.Elements<TableCell>())
-            {                            
+            {
                 ReadTableCell(tableCell);
             }
         }

@@ -30,8 +30,4 @@
     <ProjectReference Include="..\..\BuildingBlocks\RabbitMQClient\RabbitMQService.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>
