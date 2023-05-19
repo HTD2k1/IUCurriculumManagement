@@ -1,7 +1,7 @@
 ﻿
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
-
+using BlobStorageService.Helpers;
 namespace BlobStorageService
 {
     public class BlobStorageService: IBlobStorageService
@@ -17,7 +17,7 @@ namespace BlobStorageService
         private static BlobServiceClient _storageService = new BlobServiceClient(_blobServiceUri, _sasCredential);
         private static BlobContainerClient _sourceContainerClient = _storageService.GetBlobContainerClient(_sourceContainer);
 
-        public async Task UploadFiles(IFormFile file)
+        public async Task UploadFilesAsync(IFormFile file)
         {
             BlobClient blobClient = _sourceContainerClient.GetBlobClient(file.FileName);
             var fileStream = file.OpenReadStream();
@@ -25,9 +25,17 @@ namespace BlobStorageService
             fileStream.Close();
         }
 
-        public async Task DownloadFiles(IFormFile file)
+        public async Task DownloadFilesAsync(string fileName)
         {
-            throw new NotImplementedException("This function is not needed yet");
+            BlobClient blobClient =  _sourceContainerClient.GetBlobClient(fileName);
+            using var memoryStream = new MemoryStream();    
+            await blobClient.DownloadToAsync(memoryStream);
+            var csvRecords = CsvHandler.ReadCSV(memoryStream);
+
+            foreach(var record in csvRecords)
+            {
+                Console.WriteLine(record);
+            }
         }
     }
 }

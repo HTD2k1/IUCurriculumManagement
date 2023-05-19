@@ -2,31 +2,38 @@
 using CurriculumService.Services.Interfaces;
 using Microsoft.AspNetCore.Routing.Tree;
 using RabbitMQService.Interfaces;
-using CurriculumService.Helpers;
+using Newtonsoft.Json;
+using BlobStorageService;
 
 namespace CurriculumService.Services
 {
     public class SemesterCurriculumVerifierService: IMessageProcessor
-    {   
-        private readonly IMessageProcessor _messageProcessor;   
+    {      
         private readonly ILogger<SemesterCurriculumVerifierService> _logger;
+        private readonly IBlobStorageService _blobStorageService;
 
+        public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger, IBlobStorageService blobStorageService)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _blobStorageService = blobStorageService ?? throw new ArgumentNullException(nameof(blobStorageService));
+        }
+    
         public async Task ProcessMessageAsync(string message)
         {
-            _logger.LogInformation(message);
+            var curriculumEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
+            await _blobStorageService.DownloadFilesAsync(curriculumEvent.Payload);
         }
-        public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger)
-        {
-            _logger = logger;
-        }
-
         public void Verify()
         {
             throw new NotImplementedException();
         }
         public void DocumentHandler()
         {   
-            //DocxHelper.ReadTablesFromWordDocument()
+            throw new NotImplementedException();
+        }
+
+        public void CSVHandler()
+        {
             throw new NotImplementedException();
         }
         public bool ValidateNewCurriculum()

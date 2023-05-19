@@ -11,25 +11,39 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CurriculumService.Helpers
+namespace BlobStorageService.Helpers
 {
-    public static class CsvHelper
-    {
-        public static IEnumerable<Record> ReadCSV(string path)
+    public static class CsvHandler
+    {   
+        private static readonly CsvConfiguration _csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            IEnumerable<Record> csvData = new List<Record>();
+            Encoding = Encoding.UTF8,
+            Delimiter = ",",
+        };
+        public static IEnumerable<CSVRecord> ReadCSV(string path)
+        {
+            IEnumerable<CSVRecord> csvData = new List<CSVRecord>();
+            using StreamReader reader = new StreamReader(path, Encoding.UTF8);
+            var csv = new CsvReader(reader, _csvConfig);
+            var records = csv.GetRecords<CSVRecord>();
+            return records.ToList();
+        }
+
+        public static IEnumerable<CSVRecord> ReadCSV(Stream stream)
+        {
+            IEnumerable<CSVRecord> csvData = new List<CSVRecord>();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Encoding = Encoding.UTF8,
                 Delimiter = ",",
             };
-            using StreamReader reader = new StreamReader(path, Encoding.UTF8);
+            using StreamReader reader = new StreamReader(stream);
             var csv = new CsvReader(reader, config);
-            var records = csv.GetRecords<Record>();
+            var records = csv.GetRecords<CSVRecord>();
             return records.ToList();
         }
 
-        public class Record
+        public class CSVRecord
         {
             public int program_id { get; set; }
             public int pathway_id { get; set; }

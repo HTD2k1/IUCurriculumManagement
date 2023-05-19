@@ -17,3 +17,5 @@ global using Newtonsoft.Json;
 global using CurriculumService.Models;
 global using CurriculumService.Services.Interfaces;
 global using CurriculumService.DTOs;
+global using RabbitMQService.Event;
+global using BlobStorageService;

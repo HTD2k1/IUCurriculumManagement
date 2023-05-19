@@ -49,13 +49,13 @@ namespace CurriculumMeditator
                     {
                         return Results.BadRequest();
                     }
-                    await blobService.UploadFiles(formFile);
+                    await blobService.UploadFilesAsync(formFile);
 
                     var newEvent = new CurriculumEvent(CurriculumEventType.processed, formFile.FileName);
                     rabbitMQService.PublishEvent(newEvent);
                     logger.LogInformation($"New event {newEvent.Id} : {newEvent.EventType}");
                     return Results.Ok();
-                }
+                }   
                 catch(Exception ex)
                 {   
                     return Results.BadRequest(ex.ToString());  

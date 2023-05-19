@@ -9,6 +9,8 @@ namespace BlobStorageService
 {
     public interface IBlobStorageService
     {
-        public Task UploadFiles(IFormFile file);
+        public Task UploadFilesAsync(IFormFile file);
+        public Task DownloadFilesAsync(string fileName);
+
     }
 }
