@@ -49,7 +49,7 @@ namespace CurriculumMeditator
                     {
                         return Results.BadRequest();
                     }
-                    await blobService.UploadFilesAsync(formFile);
+                    await blobService.UploadFileToAzureBlobStorageAsync(formFile);
 
                     var newEvent = new CurriculumEvent(CurriculumEventType.processed, formFile.FileName);
                     rabbitMQService.PublishEvent(newEvent);

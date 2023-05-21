@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace BlobStorageService.Helpers
 {
-    public static class CsvHandler
-    {   
+    public class CsvHandler
+    {
         private static readonly CsvConfiguration _csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             Encoding = Encoding.UTF8,

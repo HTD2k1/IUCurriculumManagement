@@ -9,8 +9,8 @@ namespace BlobStorageService
 {
     public interface IBlobStorageService
     {
-        public Task UploadFilesAsync(IFormFile file);
-        public Task DownloadFilesAsync(string fileName);
+        public Task UploadFileToAzureBlobStorageAsync(IFormFile file);
+        public Task<Stream> DownloadAzureBlobStreamingAsync(string fileName);
 
     }
 }

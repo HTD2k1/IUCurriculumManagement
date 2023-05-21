@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlobStorageService", "Build
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{BEFBEDCC-AF58-40F7-8752-718A4CF43F73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlobStorageServiceTests", "BuildingBlocks\BlobStorageServiceTests\BlobStorageServiceTests.csproj", "{C06FBF4B-672F-42FF-849A-9218D6519C0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{F671550F-DE07-4DC0-AD42-1244EE400016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F671550F-DE07-4DC0-AD42-1244EE400016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F671550F-DE07-4DC0-AD42-1244EE400016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C06FBF4B-672F-42FF-849A-9218D6519C0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C06FBF4B-672F-42FF-849A-9218D6519C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C06FBF4B-672F-42FF-849A-9218D6519C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C06FBF4B-672F-42FF-849A-9218D6519C0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

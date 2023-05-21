@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Routing.Tree;
 using RabbitMQService.Interfaces;
 using Newtonsoft.Json;
 using BlobStorageService;
+using BlobStorageService.Helpers;
+using Microsoft.EntityFrameworkCore;
+using CurriculumService.Data;
 
 namespace CurriculumService.Services
 {
@@ -11,34 +14,64 @@ namespace CurriculumService.Services
     {      
         private readonly ILogger<SemesterCurriculumVerifierService> _logger;
         private readonly IBlobStorageService _blobStorageService;
-
+        private readonly IuCurriculumContext _curriculumContext;  
         public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger, IBlobStorageService blobStorageService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _blobStorageService = blobStorageService ?? throw new ArgumentNullException(nameof(blobStorageService));
         }
-    
+
         public async Task ProcessMessageAsync(string message)
         {
-            var curriculumEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
-            await _blobStorageService.DownloadFilesAsync(curriculumEvent.Payload);
+            try
+            {
+                var curriculumEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
+                var stream = await _blobStorageService.DownloadAzureBlobStreamingAsync(curriculumEvent.Payload);
+                switch (Path.GetExtension(curriculumEvent.Payload))
+                {
+                    case ".csv":
+                        var records = CSVHandler(stream);
+                        var recordIds = records.Select(x => x.course_id).ToList(); 
+                        var courses = _curriculumContext.Courses.Where(x => recordIds.Contains(x.Id)).ToList();
+                        if (ValidateNewCurriculum(courses))
+                        {
+                            _logger.LogInformation("Successfully validate ");
+                        }
+                        break;
+                    default:
+                        throw new FileFormatException("Unsupport file type for curriculum processing");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
-        public void Verify()
+        private void ValidateCourses()
         {
             throw new NotImplementedException();
         }
-        public void DocumentHandler()
+        private void DocumentHandler()
         {   
             throw new NotImplementedException();
         }
 
-        public void CSVHandler()
-        {
-            throw new NotImplementedException();
+        private IEnumerable<CsvHandler.CSVRecord> CSVHandler(Stream stream)
+        {   
+            IEnumerable<Course> availableCourses = new List<Course>();   
+            var records = CsvHandler.ReadCSV(stream);
+            return records;
         }
-        public bool ValidateNewCurriculum()
+        public bool ValidateNewCurriculum(List<Course> courses)
         {
-            return true;
+            int? sum = 0;
+            foreach(var course in courses)
+            {
+                sum += course.CreditTheory + course.CreditTheory;
+            }
+            _logger.LogInformation($"Total credit score: {sum}");
+            return (sum < 146) ? true : false;
         }
     }
 }

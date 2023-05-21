@@ -17,7 +17,7 @@ namespace BlobStorageService
         private static BlobServiceClient _storageService = new BlobServiceClient(_blobServiceUri, _sasCredential);
         private static BlobContainerClient _sourceContainerClient = _storageService.GetBlobContainerClient(_sourceContainer);
 
-        public async Task UploadFilesAsync(IFormFile file)
+        public async Task UploadFileToAzureBlobStorageAsync(IFormFile file)
         {
             BlobClient blobClient = _sourceContainerClient.GetBlobClient(file.FileName);
             var fileStream = file.OpenReadStream();
@@ -25,17 +25,11 @@ namespace BlobStorageService
             fileStream.Close();
         }
 
-        public async Task DownloadFilesAsync(string fileName)
+        public async Task<Stream> DownloadAzureBlobStreamingAsync(string fileName)
         {
             BlobClient blobClient =  _sourceContainerClient.GetBlobClient(fileName);
-            using var memoryStream = new MemoryStream();    
-            await blobClient.DownloadToAsync(memoryStream);
-            var csvRecords = CsvHandler.ReadCSV(memoryStream);
-
-            foreach(var record in csvRecords)
-            {
-                Console.WriteLine(record);
-            }
+            var response = await blobClient.DownloadStreamingAsync();
+            return response.Value.Content;
         }
     }
 }
