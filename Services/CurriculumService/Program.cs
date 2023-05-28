@@ -29,9 +29,9 @@ namespace CurriculumService
             builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
             builder.Services.AddSingleton<IRabbitMQConnection, RabbitMQDefaultConnection>();
 
-            builder.Services.AddScoped<IBlobStorageService, BlobStorageService.BlobStorageService>();
-            builder.Services.AddScoped<IRabbitMQService, RabbitMQService.RabbitMQService>();
-            builder.Services.AddScoped<IMessageProcessor, SemesterCurriculumVerifierService>();
+            builder.Services.AddSingleton<IBlobStorageService, BlobStorageService.BlobStorageService>();
+            builder.Services.AddSingleton<IRabbitMQService, RabbitMQService.RabbitMQService>();
+            builder.Services.AddSingleton<IMessageProcessor, SemesterCurriculumVerifierService>();
             builder.Services.AddHostedService<RabbitMQListenerService>();
             builder.Services.AddDbContext<IuCurriculumContext>(options =>
             {

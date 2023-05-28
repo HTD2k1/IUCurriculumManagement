@@ -2,7 +2,6 @@
 using System.Text;
 using CsvHelper.Expressions;
 using RabbitMQ.Client;
-using static CurriculumProducer.CsvHelper;
 
 namespace CurriculumProducer
 {
