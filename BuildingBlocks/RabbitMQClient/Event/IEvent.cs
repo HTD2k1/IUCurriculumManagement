@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace RabbitMQService.Event
 {
-    public interface ICurriculumEvent
+    public interface IEvent
     {
         public string ToJSON();
-        public string GetQueueName();
+        //public string GetQueueName();
     }
 }

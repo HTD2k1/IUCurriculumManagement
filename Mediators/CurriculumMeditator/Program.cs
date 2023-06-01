@@ -5,6 +5,10 @@ using BlobStorageService;
 using RabbitMQ.Client;
 using Microsoft.Extensions.Logging;
 using RabbitMQService.Interfaces;
+using System.Diagnostics;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 namespace CurriculumMeditator
 {
@@ -24,10 +28,11 @@ namespace CurriculumMeditator
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
+            builder.Services.AddSingleton<IRabbitMQService, RabbitMQService.RabbitMQService>();
             builder.Services.AddSingleton<IRabbitMQConnection, RabbitMQDefaultConnection>();
 
             builder.Services.AddScoped<IBlobStorageService, BlobStorageService.BlobStorageService>();
-            builder.Services.AddSingleton<IRabbitMQService,RabbitMQService.RabbitMQService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -63,6 +68,21 @@ namespace CurriculumMeditator
             })
             .WithName("CreateCurriculum");
 
+            app.MapGet("test/{no}", async (int no, HttpContext httpContext, IRabbitMQService rabbitMQService) =>
+            {
+                var newEvent = new CurriculumEvent(CurriculumEventType.processed, "test.cvs");
+                Console.WriteLine($"Initiating Throughput test with {no} messages");
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                for (int i = 0; i < no; i++)  // Adjust number of messages as per your requirement.
+                    {
+                        rabbitMQService.PublishEvent(newEvent);
+                    }
+                    stopwatch.Stop();
+                    Console.WriteLine($"Total time taken: {stopwatch.Elapsed.TotalSeconds} seconds");
+                
+
+            })
+            .WithName("Test");
             app.Run();
         }
     }

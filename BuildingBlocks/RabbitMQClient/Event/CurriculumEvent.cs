@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 namespace RabbitMQService.Event
 {
-    public record CurriculumEvent: ICurriculumEvent
+    public record CurriculumEvent: IEvent
     {
         public CurriculumEventType EventType;
         public string Payload { get; set; }

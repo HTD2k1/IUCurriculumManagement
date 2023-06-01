@@ -28,36 +28,10 @@ namespace RabbitMQService
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _logger.LogInformation("RabbitMQListenerService Injected Logger from RabbitMQService");
         }
-        public void PublishEvent(ICurriculumEvent newEvent)
-        {
-            var channel = _rabbitMQConnection.CreateChannel();
-            var queueName = newEvent.GetQueueName();
-            var msgBody = newEvent.ToJSON();
-
-            channel.BasicPublish(exchange: string.Empty,
-                                                    routingKey: queueName,
-                                                    basicProperties: null,
-                                                    body: Encoding.UTF8.GetBytes(msgBody));
-        }
-
-        public void ConsumeEvent(ICurriculumEvent newEvent)
-        {
-            var channel = _rabbitMQConnection.CreateChannel();
-            var queueName = newEvent.GetQueueName();
-            var msgBody = newEvent.ToJSON();
-
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, ea) =>
-            {
-                var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-            };
-        }
 
         public async Task RegisterConsumer()
         {
             var consumer = new EventingBasicConsumer(_rabbitMQConnection.Channel);
-
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
@@ -65,11 +39,14 @@ namespace RabbitMQService
                 await _messageProcessor.ProcessMessageAsync(message);
             };
             foreach (var queue in _rabbitMQConnection.Settings.SubscribeQueues)
-            {
-                _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);
+            {   
+                // This function is idempotent. Hence, it will not create queues that are duplicate to any existing queues
+                _rabbitMQConnection.Channel.QueueDeclare(queue, durable: true, exclusive:false, autoDelete: false);
+                _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);  
             }
-        }
+        }   
 
+        
         public void Dispose()
         {
             _rabbitMQConnection.Dispose();  

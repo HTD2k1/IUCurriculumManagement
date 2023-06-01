@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using CurriculumService.Models;
 using CurriculumService.Data;
+using RabbitMQService.Interfaces;
+
 namespace CurriculumService.Controllers
 {
     [ApiController]
@@ -11,6 +13,7 @@ namespace CurriculumService.Controllers
 
         private readonly ILogger<Course> _logger;
         private readonly IuCurriculumContext _context;
+        private readonly IRabbitMQService _service;
 
         public CourseController(ILogger<Course> logger, IuCurriculumContext dBContext)
         {

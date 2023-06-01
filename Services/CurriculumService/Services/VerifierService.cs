@@ -44,7 +44,7 @@ namespace CurriculumService.Services
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.ToString());
             }
 
         }
