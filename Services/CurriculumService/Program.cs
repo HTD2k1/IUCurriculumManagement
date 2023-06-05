@@ -37,7 +37,7 @@ namespace CurriculumService
             {
                 var connectionString = builder.Configuration.GetConnectionString("IuCurriculum");
                 if(connectionString != null)
-                {
+                { 
                     options.UseMySQL(connectionString);
                 }
             });
@@ -54,6 +54,11 @@ namespace CurriculumService
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
+        }
+
+        private static void NotifyServiceManager(IRabbitMQService rabbitMQService)
+        {
+            
         }
     }
 }

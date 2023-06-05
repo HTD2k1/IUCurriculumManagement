@@ -57,7 +57,7 @@ namespace CurriculumMeditator
                     await blobService.UploadFileToAzureBlobStorageAsync(formFile);
 
                     var newEvent = new CurriculumEvent(CurriculumEventType.processed, formFile.FileName);
-                    rabbitMQService.PublishEvent(newEvent);
+                    rabbitMQService.PublishCurriculumEvent(newEvent);
                     logger.LogInformation($"New event {newEvent.Id} : {newEvent.EventType}");
                     return Results.Ok();
                 }   
@@ -75,12 +75,10 @@ namespace CurriculumMeditator
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 for (int i = 0; i < no; i++)  // Adjust number of messages as per your requirement.
                     {
-                        rabbitMQService.PublishEvent(newEvent);
+                        rabbitMQService.PublishCurriculumEvent(newEvent);
                     }
                     stopwatch.Stop();
                     Console.WriteLine($"Total time taken: {stopwatch.Elapsed.TotalSeconds} seconds");
-                
-
             })
             .WithName("Test");
             app.Run();

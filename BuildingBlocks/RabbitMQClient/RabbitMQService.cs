@@ -44,9 +44,26 @@ namespace RabbitMQService
                 _rabbitMQConnection.Channel.QueueDeclare(queue, durable: true, exclusive:false, autoDelete: false);
                 _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);  
             }
-        }   
+        }
 
-        
+        public void PublishCurriculumEvent(CurriculumEvent newEvent)
+        {
+            var queueName = newEvent.GetQueueName();
+            var msgBody = newEvent.ToJSON();
+
+            _rabbitMQConnection.Channel.BasicPublish(exchange: string.Empty,
+                                                    routingKey: queueName,
+                                                    basicProperties: null,
+                                                    body: Encoding.UTF8.GetBytes(msgBody));
+        }
+
+        public void BasicPublishMessage(string message, string exChangeName, string queueName, IBasicProperties properties = null!)
+        {
+            _rabbitMQConnection.Channel.BasicPublish(exchange: exChangeName,
+                                        routingKey: queueName,
+                                        basicProperties: properties,
+                                        body: Encoding.UTF8.GetBytes(message));
+        }
         public void Dispose()
         {
             _rabbitMQConnection.Dispose();  

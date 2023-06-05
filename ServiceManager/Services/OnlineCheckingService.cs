@@ -1,5 +1,4 @@
 ﻿using RabbitMQService.Interfaces;
-using ServiceManager.Models;
 
 namespace ServiceManager.Services
 {
@@ -15,7 +14,7 @@ namespace ServiceManager.Services
         }
         public async Task ProcessMessageAsync(string message)
         {
-            var serviceEvent = JsonConvert.DeserializeObject<Models.MicroService>(message) ?? throw  new Exception("Message cannot be serialized");
+            var serviceEvent = JsonConvert.DeserializeObject<MicroService>(message) ?? throw  new Exception("Message cannot be serialized");
             var availableMicroService = _serviceContext.MicroServices.FirstOrDefault(x => x.Id == serviceEvent.Id);
             if(availableMicroService== null) {
                 _serviceContext.MicroServices.Add(serviceEvent);

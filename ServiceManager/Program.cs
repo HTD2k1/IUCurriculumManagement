@@ -1,7 +1,7 @@
 using RabbitMQService.Interfaces;
 using RabbitMQService;
 using RabbitMQService.Event;
-using ServiceManager.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceManager
 {
@@ -34,16 +34,38 @@ namespace ServiceManager
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-            app.MapGet("/status", (HttpContext httpContext, ServiceContext serviceContext) =>
+            app.MapGet("/get-services", (HttpContext httpContext, ServiceContext serviceContext) =>
             {
 
-                return serviceContext.MicroServices.Select(x=>x).ToList();
+                return serviceContext.MicroServices.Select(x => x).ToList();
             })
-            .WithName("GetWeatherForecast");
+            .WithName("GetMicroservicesStatus");
 
+            app.MapPost("/add-service-status", (HttpContext httpContext, ServiceContext serviceContext, [FromBody] string content, ILogger<Program> logger ) =>
+            {
+                try
+                {
+                    var microservice = JsonConvert.DeserializeObject<MicroService>(content);
+                    var existingMicroService = serviceContext.MicroServices.FirstOrDefault(x => x.Id == microservice.Id);
+                    if (existingMicroService == null)
+                    {
+                        serviceContext.MicroServices.Add(microservice);
+                    }
+                    else
+                    {
+                        existingMicroService.currentStatus = microservice.currentStatus;
+                    }
+                    serviceContext.SaveChanges();
+                    return Results.Created("/add-service-status", microservice);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.ToString());
+                    return Results.Problem(ex.ToString());  
+                }
+            })
+            .WithName("AddMicroservicesStatus");
             app.Run();
         }
     }
