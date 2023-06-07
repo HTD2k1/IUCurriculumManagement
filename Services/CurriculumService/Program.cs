@@ -8,6 +8,7 @@ using RabbitMQService;
 using BlobStorageService;
 using RabbitMQService.Interfaces;
 using CurriculumService.Services;
+using System.Runtime.CompilerServices;
 
 namespace CurriculumService
 {
@@ -40,7 +41,7 @@ namespace CurriculumService
                 { 
                     options.UseMySQL(connectionString);
                 }
-            });
+            }, contextLifetime: ServiceLifetime.Singleton);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,16 +50,10 @@ namespace CurriculumService
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
-        }
-
-        private static void NotifyServiceManager(IRabbitMQService rabbitMQService)
-        {
-            
         }
     }
 }

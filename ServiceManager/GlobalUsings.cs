@@ -16,4 +16,3 @@ global using System.Threading.Tasks;
 global using Newtonsoft.Json;
 global using ServiceManager.Services;
 global using Microsoft.EntityFrameworkCore;
-global using Newtonsoft.Json;

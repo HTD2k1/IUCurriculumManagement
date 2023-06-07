@@ -33,7 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{1820065A-EDF3-4DEC-B652-BC44BA33F346}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceManager", "ServiceManager\ServiceManager.csproj", "{3019D229-B686-48E4-B6E6-F13727645F9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceManager", "ServiceManager\ServiceManager.csproj", "{3019D229-B686-48E4-B6E6-F13727645F9E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModels", "Common\DataModels\DataModels.csproj", "{92F73713-0A81-4D63-AA06-D8D51DF3798B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{3019D229-B686-48E4-B6E6-F13727645F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3019D229-B686-48E4-B6E6-F13727645F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3019D229-B686-48E4-B6E6-F13727645F9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F73713-0A81-4D63-AA06-D8D51DF3798B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F73713-0A81-4D63-AA06-D8D51DF3798B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F73713-0A81-4D63-AA06-D8D51DF3798B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92F73713-0A81-4D63-AA06-D8D51DF3798B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{F671550F-DE07-4DC0-AD42-1244EE400016} = {E7716126-D172-4746-A493-1AD37364674D}
 		{1820065A-EDF3-4DEC-B652-BC44BA33F346} = {48C8B695-2767-4376-8885-DCA44269E1F7}
 		{3019D229-B686-48E4-B6E6-F13727645F9E} = {6FA1F604-D298-4FC8-8DF8-FDDB68E90CE4}
+		{92F73713-0A81-4D63-AA06-D8D51DF3798B} = {BEFBEDCC-AF58-40F7-8752-718A4CF43F73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {424D6A26-877A-4967-8FE3-F06BC3F0398C}

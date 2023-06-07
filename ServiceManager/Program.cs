@@ -2,7 +2,7 @@ using RabbitMQService.Interfaces;
 using RabbitMQService;
 using RabbitMQService.Event;
 using Microsoft.AspNetCore.Mvc;
-
+using Common.MicroserviceModels;
 namespace ServiceManager
 {
     public class Program
@@ -54,7 +54,7 @@ namespace ServiceManager
                     }
                     else
                     {
-                        existingMicroService.currentStatus = microservice.currentStatus;
+                        existingMicroService.CurrentStatus = microservice.CurrentStatus;
                     }
                     serviceContext.SaveChanges();
                     return Results.Created("/add-service-status", microservice);

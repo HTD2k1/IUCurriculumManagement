@@ -7,6 +7,7 @@ using BlobStorageService;
 using BlobStorageService.Helpers;
 using Microsoft.EntityFrameworkCore;
 using CurriculumService.Data;
+using System.Diagnostics;
 
 namespace CurriculumService.Services
 {
@@ -15,10 +16,11 @@ namespace CurriculumService.Services
         private readonly ILogger<SemesterCurriculumVerifierService> _logger;
         private readonly IBlobStorageService _blobStorageService;
         private readonly IuCurriculumContext _curriculumContext;  
-        public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger, IBlobStorageService blobStorageService)
+        public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger, IBlobStorageService blobStorageService, IuCurriculumContext curriculumContext)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _blobStorageService = blobStorageService ?? throw new ArgumentNullException(nameof(blobStorageService));
+            _curriculumContext = curriculumContext ?? throw new ArgumentNullException(nameof(curriculumContext));
         }
 
         public async Task ProcessMessageAsync(string message)
@@ -26,6 +28,7 @@ namespace CurriculumService.Services
             try
             {
                 var curriculumEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
+                if (curriculumEvent == null) throw new JsonReaderException("Unsupported format");
                 var stream = await _blobStorageService.DownloadAzureBlobStreamingAsync(curriculumEvent.Payload);
                 switch (Path.GetExtension(curriculumEvent.Payload))
                 {

@@ -7,7 +7,7 @@ using System.Runtime;
 using System.Threading.Channels;
 using Microsoft.Extensions.Logging;
 using RabbitMQService.Interfaces;
-
+using Common.MicroserviceModels;
 namespace RabbitMQService
 {
     public class RabbitMQService: IRabbitMQService
@@ -29,13 +29,17 @@ namespace RabbitMQService
             _logger.LogInformation("RabbitMQListenerService Injected Logger from RabbitMQService");
         }
 
-        public async Task RegisterConsumer()
+        public Task RegisterConsumer()
         {
             var consumer = new EventingBasicConsumer(_rabbitMQConnection.Channel);
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
+
+                if(_messageProcessor == null) { 
+                    throw new NullReferenceException(); 
+                }
                 await _messageProcessor.ProcessMessageAsync(message);
             };
             foreach (var queue in _rabbitMQConnection.Settings.SubscribeQueues)
@@ -44,6 +48,9 @@ namespace RabbitMQService
                 _rabbitMQConnection.Channel.QueueDeclare(queue, durable: true, exclusive:false, autoDelete: false);
                 _rabbitMQConnection.Channel.BasicConsume(queue: queue, autoAck: true, consumer: consumer);  
             }
+            if (_rabbitMQConnection.Settings.ServiceName != "ServiceManager")
+                NotifyServiceManagerWhenConnnectingToRabbitMQ();
+            return Task.CompletedTask;
         }
 
         public void PublishCurriculumEvent(CurriculumEvent newEvent)
@@ -63,6 +70,21 @@ namespace RabbitMQService
                                         routingKey: queueName,
                                         basicProperties: properties,
                                         body: Encoding.UTF8.GetBytes(message));
+        }
+        private void NotifyServiceManagerWhenConnnectingToRabbitMQ()
+        {   
+            var startupEvent = new MicroService
+            {
+                Id = new Guid(_rabbitMQConnection.Settings.ServiceId),
+                ServiceName = _rabbitMQConnection.Settings.ServiceName,
+                CurrentStatus = new Status
+                {
+                    Id = Guid.NewGuid(),
+                    DateTime = DateTime.Now,
+                    ServiceStatus = StatusType.Online
+                }
+            };
+            _rabbitMQConnection.Channel.BasicPublish(exchange: string.Empty, routingKey: "service-online", basicProperties: null, body: Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(startupEvent)));
         }
         public void Dispose()
         {

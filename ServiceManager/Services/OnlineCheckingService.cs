@@ -1,5 +1,5 @@
 ﻿using RabbitMQService.Interfaces;
-
+using Common.MicroserviceModels;
 namespace ServiceManager.Services
 {
     public class OnlineCheckingService: IMessageProcessor
@@ -20,7 +20,7 @@ namespace ServiceManager.Services
                 _serviceContext.MicroServices.Add(serviceEvent);
             }
             else {
-                availableMicroService.StatusLog.Add(serviceEvent.currentStatus);
+                availableMicroService.StatusLog.Add(serviceEvent.CurrentStatus);
                 _serviceContext.SaveChanges();
             }
         } 
