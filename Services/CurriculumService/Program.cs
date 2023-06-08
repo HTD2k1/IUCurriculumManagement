@@ -28,10 +28,11 @@ namespace CurriculumService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
-            builder.Services.AddSingleton<IRabbitMQConnection, RabbitMQDefaultConnection>();
+            builder.Services.AddTransient<IRabbitMQConnection, RabbitMQDefaultConnection>();
 
             builder.Services.AddSingleton<IBlobStorageService, BlobStorageService.BlobStorageService>();
             builder.Services.AddSingleton<IRabbitMQService, RabbitMQService.RabbitMQService>();
+            //builder.Services.AddSingleton<IRabbitMQPublishService, RabbitMQPublishService>();
             builder.Services.AddSingleton<IMessageProcessor, SemesterCurriculumVerifierService>();
             builder.Services.AddHostedService<RabbitMQListenerService>();
             builder.Services.AddDbContext<IuCurriculumContext>(options =>

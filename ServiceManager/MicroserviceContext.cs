@@ -15,9 +15,6 @@ namespace ServiceManager
             _configuration= configuration;    
             _appEnv= env;
         }
-
-        // The following configures EF to create a Sqlite database file in the
-        // special "local" folder for your platform.
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {   
             var string1 = _configuration.GetConnectionString("MicroservicesDatabase");

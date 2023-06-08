@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Communication.Email" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\BlobStorageService\BlobStorageService.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\RabbitMQClient\RabbitMQService.csproj" />
+    <ProjectReference Include="..\..\Common\DataModels\DataModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -37,7 +37,6 @@ namespace ServiceManager
             app.UseAuthorization();
             app.MapGet("/get-services", (HttpContext httpContext, ServiceContext serviceContext) =>
             {
-
                 return serviceContext.MicroServices.Select(x => x).ToList();
             })
             .WithName("GetMicroservicesStatus");

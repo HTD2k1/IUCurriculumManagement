@@ -3,19 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer", "Receive\Consumer.csproj", "{29E426C7-E918-4370-A78E-48D0636B0C7F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer", "Send\Producer.csproj", "{C22A33EC-0689-4B19-B26C-A07F36444CE0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{E7716126-D172-4746-A493-1AD37364674D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5AE56268-2344-434D-81EC-F0870F4B5D38}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meditators", "Meditators", "{6FA1F604-D298-4FC8-8DF8-FDDB68E90CE4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServerResponseServices", "ServerResponseServices", "{6FA1F604-D298-4FC8-8DF8-FDDB68E90CE4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQService", "BuildingBlocks\RabbitMQClient\RabbitMQService.csproj", "{90507631-66E1-4C70-8309-B336792F1DBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumMeditator", "Mediators\CurriculumMeditator\CurriculumMeditator.csproj", "{C05DCE53-CFA4-439A-9A68-6510576F44DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppService", "Mediators\CurriculumMeditator\WebAppService.csproj", "{C05DCE53-CFA4-439A-9A68-6510576F44DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumService", "Services\CurriculumService\CurriculumService.csproj", "{CACFD220-3EA2-4BE7-9CC9-A8C38538559D}"
 EndProject
@@ -43,14 +39,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29E426C7-E918-4370-A78E-48D0636B0C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29E426C7-E918-4370-A78E-48D0636B0C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29E426C7-E918-4370-A78E-48D0636B0C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29E426C7-E918-4370-A78E-48D0636B0C7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C22A33EC-0689-4B19-B26C-A07F36444CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C22A33EC-0689-4B19-B26C-A07F36444CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C22A33EC-0689-4B19-B26C-A07F36444CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C22A33EC-0689-4B19-B26C-A07F36444CE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{90507631-66E1-4C70-8309-B336792F1DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{90507631-66E1-4C70-8309-B336792F1DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90507631-66E1-4C70-8309-B336792F1DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
