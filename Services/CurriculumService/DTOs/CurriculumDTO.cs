@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace CurriculumService.DTOs
 {
-    public class CurriculumDTO
+    public class CurriculumDto
     {
-        public string Program { get; set; }
-        public List<CourseDTO> courses { get; set; } = new List<CourseDTO>();   
-        public string? EnglishRequirement { get; set; }
+        public Models.Program? Program { get; set; } 
+        public List<Course>? Courses { get; set; }
+        public List<CourseCourseRelationship> CourseCourseRelationships { get; set; } = null!;
+        public List<CourseProgram> CoursePrograms { get; set; } = null!;
     }
 }

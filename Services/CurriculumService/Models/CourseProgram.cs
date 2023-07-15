@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace CurriculumService.Models;
@@ -22,16 +23,14 @@ public partial class CourseProgram
     [Column("course_code")]
     [StringLength(255)]
     public string CourseCode { get; set; } = null!;
-
     [Column("course_type_id")]
     public int CourseTypeId { get; set; }
-
-    [ForeignKey("CourseId")]
-    public virtual Course Course { get; set; } = null!;
-
-    [ForeignKey("CourseTypeId")]
+    
+    [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public virtual Course? Course { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual CourseType CourseType { get; set; } = null!;
-
-    [ForeignKey("ProgramId")]
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual Program Program { get; set; } = null!;
+    
 }

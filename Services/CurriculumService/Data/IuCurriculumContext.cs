@@ -595,17 +595,17 @@ public partial class IuCurriculumContext : DbContext
             entity.Property(e => e.CourseId2).HasColumnName("course_id2");
             entity.Property(e => e.RelationshipId).HasColumnName("relationship_id");
 
-            entity.HasOne(d => d.CourseId1Navigation).WithMany()
-                .HasForeignKey(d => d.CourseId1)
-                .HasConstraintName("FKCourse_Course1");
-
-            entity.HasOne(d => d.CourseId2Navigation).WithMany()
-                .HasForeignKey(d => d.CourseId2)
-                .HasConstraintName("FKCourse_Course2");
-
-            entity.HasOne(d => d.Relationship).WithMany()
-                .HasForeignKey(d => d.RelationshipId)
-                .HasConstraintName("CourseCourse_CourseRelationship");
+            // entity.HasOne(d => d.CourseId1Navigation).WithMany()
+            //     .HasForeignKey(d => d.CourseId1)
+            //     .HasConstraintName("FKCourse_Course1");
+            //
+            // entity.HasOne(d => d.CourseId2Navigation).WithMany()
+            //     .HasForeignKey(d => d.CourseId2)
+            //     .HasConstraintName("FKCourse_Course2");
+            //
+            // entity.HasOne(d => d.Relationship).WithMany()
+            //     .HasForeignKey(d => d.RelationshipId)
+            //     .HasConstraintName("CourseCourse_CourseRelationship");
         });
 
         modelBuilder.Entity<CourseDepartment>(entity =>
@@ -1118,10 +1118,10 @@ public partial class IuCurriculumContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_program_major");
 
-            entity.HasOne(d => d.ProgramType).WithMany(p => p.Programs)
-                .HasForeignKey(d => d.ProgramTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_program_program_type");
+            // entity.HasOne(d => d.ProgramType).WithMany(p => p.Programs)
+            //     .HasForeignKey(d => d.ProgramTypeId)
+            //     .OnDelete(DeleteBehavior.ClientSetNull)
+            //     .HasConstraintName("FK_program_program_type");
         });
 
         modelBuilder.Entity<ProgramDocument>(entity =>

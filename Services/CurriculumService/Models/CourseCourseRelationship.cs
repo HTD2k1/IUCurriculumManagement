@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace CurriculumService.Models;
@@ -22,12 +23,17 @@ public partial class CourseCourseRelationship
     [Column("relationship_id")]
     public int RelationshipId { get; set; }
 
-    [ForeignKey("CourseId1")]
-    public virtual Course CourseId1Navigation { get; set; } = null!;
-
-    [ForeignKey("CourseId2")]
-    public virtual Course CourseId2Navigation { get; set; } = null!;
-
-    [ForeignKey("RelationshipId")]
-    public virtual CourseRelationship Relationship { get; set; } = null!;
+    // [ForeignKey("CourseId1")]
+    // [JsonIgnore]
+    // public virtual Course CourseId1Navigation { get; set; } = null!;
+    //
+    // [ForeignKey("CourseId2")]
+    // [JsonIgnore]
+    //
+    // public virtual Course CourseId2Navigation { get; set; } = null!;
+    //
+    // [ForeignKey("RelationshipId")]
+    // [JsonIgnore]
+    //
+    // public virtual CourseRelationship Relationship { get; set; } = null!;
 }

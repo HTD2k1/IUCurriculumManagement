@@ -9,6 +9,7 @@ using BlobStorageService;
 using RabbitMQService.Interfaces;
 using CurriculumService.Services;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace CurriculumService
 {
@@ -20,7 +21,10 @@ namespace CurriculumService
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });;
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
             builder.Logging.AddDebug();

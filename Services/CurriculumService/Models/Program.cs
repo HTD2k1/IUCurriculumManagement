@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Mysqlx.Expect;
 
 namespace CurriculumService.Models;
 
@@ -38,12 +40,16 @@ public partial class Program
 
     [ForeignKey("MajorId")]
     [InverseProperty("Programs")]
+    
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual Major? Major { get; set; }
 
+    [System.Text.Json.Serialization.JsonIgnore]
     [InverseProperty("Program")]
     public virtual ICollection<ProgramDocument> ProgramDocuments { get; } = new List<ProgramDocument>();
 
-    [ForeignKey("ProgramTypeId")]
-    [InverseProperty("Programs")]
-    public virtual ProgramType ProgramType { get; set; } = null!;
+    // [System.Text.Json.Serialization.JsonIgnore]
+    // [ForeignKey("ProgramTypeId")]
+    // [InverseProperty("Programs")]
+    // public virtual ProgramType ProgramType { get; set; } = null!;
 }
