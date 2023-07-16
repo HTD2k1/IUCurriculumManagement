@@ -13,7 +13,6 @@ namespace CurriculumService.Controllers
     [Route("[controller]")]
     public class CurriculumController : ControllerBase
     {
-
         private readonly ILogger<Course> _logger;
         private readonly IuCurriculumContext _context;
         private readonly IRabbitMQService _service;
@@ -32,27 +31,22 @@ namespace CurriculumService.Controllers
                 return new NotFoundResult();
             var coursePrograms = _context.CoursePrograms
                 .Where(cp => cp.ProgramId == program.Id)
-                .Include(cp => cp.Course)
                 .ToList();
-            var courses = new List<Course>();
-            var courseIds = coursePrograms.Select(x => x.Course.Id).ToList();
-
-            coursePrograms = coursePrograms.Select(x =>
-            {
-                if (x.Course != null) courses.Add(x.Course);
-                x.Course = null;
-                return x;
-            }).ToList();
-            
+            var courseIds = coursePrograms.Select(x => x.CourseId).ToList();
+            var courses = _context.Courses.Where(x => courseIds.Contains(x.Id)).ToList();
             var courseCourseRelationShips = _context.CourseCourseRelationships
                 .Select(x => x)
                 .Where(x => courseIds.Contains(x.CourseId1)).ToList();
+
+            var coursePathways = _context.CoursePathways
+                .Where(x => x.PathwayId == 3 && courseIds.Contains(x.CourseId) && x.ProgramId == program.Id).ToList();
             return new OkObjectResult(new CurriculumDto()
             {
                 Program = program,
                 CoursePrograms = coursePrograms,
                 CourseCourseRelationships = courseCourseRelationShips,
-                Courses = courses
+                Courses = courses,
+                CoursePathways = coursePathways
             });
         }
         [HttpPost("Update")]
@@ -61,7 +55,8 @@ namespace CurriculumService.Controllers
             try
             {
                 if (curriculumDto.Courses != null && curriculumDto.CoursePrograms != null &&
-                    curriculumDto.Program != null && curriculumDto.CourseCourseRelationships != null)
+                    curriculumDto.Program != null && curriculumDto.CourseCourseRelationships != null
+                    && curriculumDto.CoursePathways != null)
                 {
                     if (_context.Programs.Any(x => x.Id == curriculumDto.Program.Id))
                     {
@@ -104,6 +99,17 @@ namespace CurriculumService.Controllers
                             _context.CourseCourseRelationships.Add(relationship);
                         }
                     }
+                    foreach (var coursePathway in curriculumDto.CoursePathways)
+                    {
+                        if (_context.CoursePathways.Any(x => x.CourseId == coursePathway.CourseId && x.ProgramId == coursePathway.ProgramId && coursePathway.PathwayId == 3))
+                        {
+                            _context.CoursePathways.Update(coursePathway);
+                        }
+                        else
+                        {
+                            _context.CoursePathways.Add(coursePathway);
+                        }
+                    }
                 }
 
                 _context.SaveChanges();
@@ -117,26 +123,5 @@ namespace CurriculumService.Controllers
           
 
         }
-        // [HttpPost(Name="CreateOrUpdateCurriculum")]
-        // public IActionResult Post([FromBody] CurriculumDto course)
-        // {
-        //     try
-        //     {
-        //         if (course == null) return new BadRequestObjectResult("NULL or INVALID COURSE");
-        //         if (_context.Courses.Any(x => x.Id == course.Id))
-        //         { 
-        //             _context.Courses.Update(course);
-        //         }
-        //         else  _context.Courses.Add(course);
-        //         _context.SaveChanges();
-        //         _context.Entry(course).State = EntityState.Detached;
-        //         return new CreatedResult("/Course", null);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         _logger.LogError(ex.ToString());
-        //         return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-        //     }
-        // }
     }
 }

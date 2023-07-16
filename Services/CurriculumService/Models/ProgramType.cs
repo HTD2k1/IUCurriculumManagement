@@ -21,6 +21,6 @@ public partial class ProgramType
     [StringLength(50)]
     public string? Description { get; set; }
 
-    [InverseProperty("ProgramType")]
-    public virtual ICollection<Program> Programs { get; } = new List<Program>();
+    // [InverseProperty("ProgramType")]
+    // public virtual ICollection<Program> Programs { get; } = new List<Program>();
 }

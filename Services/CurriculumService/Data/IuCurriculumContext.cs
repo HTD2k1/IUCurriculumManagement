@@ -582,8 +582,8 @@ public partial class IuCurriculumContext : DbContext
         modelBuilder.Entity<CourseCourseRelationship>(entity =>
         {
             entity
-                .HasNoKey()
                 .ToTable("course_course_relationship");
+            entity.HasKey(x => new { x.CourseId1, x.CourseId2 });
 
             entity.HasIndex(e => e.RelationshipId, "CourseCourse_CourseRelationship");
 
@@ -662,8 +662,8 @@ public partial class IuCurriculumContext : DbContext
 
         modelBuilder.Entity<CoursePathway>(entity =>
         {
+            entity.HasKey(x => new { x.ProgramId, x.CourseId, x.PathwayId });
             entity
-                .HasNoKey()
                 .ToTable("course_pathway");
 
             entity.HasIndex(e => e.CourseId, "FK_CoursePathway_Course");
@@ -678,25 +678,26 @@ public partial class IuCurriculumContext : DbContext
             entity.Property(e => e.Semester).HasColumnName("semester");
             entity.Property(e => e.Year).HasColumnName("year");
 
-            entity.HasOne(d => d.Course).WithMany()
-                .HasForeignKey(d => d.CourseId)
-                .HasConstraintName("FK_CoursePathway_Course");
-
-            entity.HasOne(d => d.Pathway).WithMany()
-                .HasForeignKey(d => d.PathwayId)
-                .HasConstraintName("FK_CoursePathway_Pathway");
-
-            entity.HasOne(d => d.Program).WithMany()
-                .HasForeignKey(d => d.ProgramId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CoursePathway_Program");
+            // entity.HasOne(d => d.Course).WithMany()
+            //     .HasForeignKey(d => d.CourseId)
+            //     .HasConstraintName("FK_CoursePathway_Course");
+            //
+            // entity.HasOne(d => d.Pathway).WithMany()
+            //     .HasForeignKey(d => d.PathwayId)
+            //     .HasConstraintName("FK_CoursePathway_Pathway");
+            //
+            // entity.HasOne(d => d.Program).WithMany()
+            //     .HasForeignKey(d => d.ProgramId)
+            //     .OnDelete(DeleteBehavior.ClientSetNull)
+            //     .HasConstraintName("FK_CoursePathway_Program");
         });
 
         modelBuilder.Entity<CourseProgram>(entity =>
         {
             entity
-                .HasNoKey()
-                .ToTable("course_program");
+                .HasKey(x => new {x.CourseId, x.ProgramId});
+                
+                entity.ToTable("course_program");
 
             entity.HasIndex(e => e.CourseTypeId, "FK_CourseProgram_CourseType");
 
@@ -711,17 +712,17 @@ public partial class IuCurriculumContext : DbContext
             entity.Property(e => e.CourseTypeId).HasColumnName("course_type_id");
             entity.Property(e => e.ProgramId).HasColumnName("program_id");
 
-            entity.HasOne(d => d.Course).WithMany()
-                .HasForeignKey(d => d.CourseId)
-                .HasConstraintName("FK_CourseProgram_Course");
-
-            entity.HasOne(d => d.CourseType).WithMany()
-                .HasForeignKey(d => d.CourseTypeId)
-                .HasConstraintName("FK_CourseProgram_CourseType");
-
-            entity.HasOne(d => d.Program).WithMany()
-                .HasForeignKey(d => d.ProgramId)
-                .HasConstraintName("FK_CourseProgram_Program");
+            // entity.HasOne(d => d.Course).WithMany()
+            //     .HasForeignKey(d => d.CourseId)
+            //     .HasConstraintName("FK_CourseProgram_Course");
+            //
+            // entity.HasOne(d => d.CourseType).WithMany()
+            //     .HasForeignKey(d => d.CourseTypeId)
+            //     .HasConstraintName("FK_CourseProgram_CourseType");
+            //
+            // entity.HasOne(d => d.Program).WithMany()
+            //     .HasForeignKey(d => d.ProgramId)
+            //     .HasConstraintName("FK_CourseProgram_Program");
         });
 
         modelBuilder.Entity<CourseRelationship>(entity =>
@@ -1113,10 +1114,10 @@ public partial class IuCurriculumContext : DbContext
                 .HasMaxLength(4)
                 .HasColumnName("version");
 
-            entity.HasOne(d => d.Major).WithMany(p => p.Programs)
-                .HasForeignKey(d => d.MajorId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_program_major");
+            // entity.HasOne(d => d.Major).WithMany(p => p.Programs)
+            //     .HasForeignKey(d => d.MajorId)
+            //     .OnDelete(DeleteBehavior.Cascade)
+            //     .HasConstraintName("FK_program_major");
 
             // entity.HasOne(d => d.ProgramType).WithMany(p => p.Programs)
             //     .HasForeignKey(d => d.ProgramTypeId)
@@ -1138,13 +1139,13 @@ public partial class IuCurriculumContext : DbContext
             entity.Property(e => e.DocumentId).HasColumnName("document_id");
             entity.Property(e => e.ProgramId).HasColumnName("program_id");
 
-            entity.HasOne(d => d.Document).WithMany(p => p.ProgramDocuments)
-                .HasForeignKey(d => d.DocumentId)
-                .HasConstraintName("FK2");
+            // entity.HasOne(d => d.Document).WithMany(p => p.ProgramDocuments)
+            //     .HasForeignKey(d => d.DocumentId)
+            //     .HasConstraintName("FK2");
 
-            entity.HasOne(d => d.Program).WithMany(p => p.ProgramDocuments)
-                .HasForeignKey(d => d.ProgramId)
-                .HasConstraintName("FK1");
+            // entity.HasOne(d => d.Program).WithMany(p => p.ProgramDocuments)
+            //     .HasForeignKey(d => d.ProgramId)
+            //     .HasConstraintName("FK1");
         });
 
         modelBuilder.Entity<ProgramType>(entity =>

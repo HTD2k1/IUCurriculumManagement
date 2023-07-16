@@ -12,5 +12,6 @@ namespace CurriculumService.DTOs
         public List<Course>? Courses { get; set; }
         public List<CourseCourseRelationship> CourseCourseRelationships { get; set; } = null!;
         public List<CourseProgram> CoursePrograms { get; set; } = null!;
+        public List<CoursePathway> CoursePathways { get; set; } = null!;
     }
 }

@@ -29,6 +29,6 @@ public partial class Major
     [InverseProperty("Majors")]
     public virtual Discipline? Discipline { get; set; }
 
-    [InverseProperty("Major")]
-    public virtual ICollection<Program> Programs { get; } = new List<Program>();
+    // [InverseProperty("Major")]
+    // public virtual ICollection<Program> Programs { get; } = new List<Program>();
 }

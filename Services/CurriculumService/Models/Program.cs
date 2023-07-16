@@ -37,19 +37,19 @@ public partial class Program
     [Column("valid_from")]
     [StringLength(255)]
     public string? ValidFrom { get; set; }
-
-    [ForeignKey("MajorId")]
-    [InverseProperty("Programs")]
     
-    [System.Text.Json.Serialization.JsonIgnore]
-    public virtual Major? Major { get; set; }
-
-    [System.Text.Json.Serialization.JsonIgnore]
-    [InverseProperty("Program")]
-    public virtual ICollection<ProgramDocument> ProgramDocuments { get; } = new List<ProgramDocument>();
+    // [ForeignKey("MajorId")]
+    // [InverseProperty("Programs")]
+    
+    // [System.Text.Json.Serialization.JsonIgnore]
+    // public virtual Major? Major { get; set; }
+    //
+    // [System.Text.Json.Serialization.JsonIgnore]
+    // [InverseProperty("Program")]
+    // public virtual ICollection<ProgramDocument>? ProgramDocuments { get; } = new List<ProgramDocument>();
 
     // [System.Text.Json.Serialization.JsonIgnore]
     // [ForeignKey("ProgramTypeId")]
     // [InverseProperty("Programs")]
-    // public virtual ProgramType ProgramType { get; set; } = null!;
+    // public virtual ProgramType? ProgramType { get; set; } = null!;
 }

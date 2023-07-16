@@ -21,11 +21,11 @@ public partial class ProgramDocument
     [Column("id")]
     public int Id { get; set; }
 
-    [ForeignKey("DocumentId")]
-    [InverseProperty("ProgramDocuments")]
-    public virtual Documentary? Document { get; set; }
-
-    [ForeignKey("ProgramId")]
-    [InverseProperty("ProgramDocuments")]
-    public virtual Program? Program { get; set; }
+    // [ForeignKey("DocumentId")]
+    // [InverseProperty("ProgramDocuments")]
+    // public virtual Documentary? Document { get; set; }
+    //
+    // [ForeignKey("ProgramId")]
+    // [InverseProperty("ProgramDocuments")]
+    // public virtual Program? Program { get; set; }
 }

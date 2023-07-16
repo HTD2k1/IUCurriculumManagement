@@ -74,12 +74,7 @@ namespace RabbitMQService
        private void DeclareAndConsumeQueues(IEnumerable<string> queues, IBasicConsumer consumer)
        {
             var mainQueueArgs = new Dictionary<string, object>
-            {   
-                // TO DO: Move queues settings to other places
-                //{ "x-dead-letter-exchange", "DeadLetter" },
-                //{ "x-dead-letter-routing-key", "dead_letter_queue" },
-                //{ "x-message-ttl", 10000 },  // Message TTL in milliseconds
-                //{ "x-max-length", 10000000 }  // Maximum queue length
+            {
             };
             foreach (var queue in queues)
             {

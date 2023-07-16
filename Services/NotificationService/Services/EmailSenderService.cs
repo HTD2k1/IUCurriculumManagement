@@ -11,7 +11,6 @@ namespace NotificationServices.Services
     public class EmailSenderService: IMessageProcessor
     {      
         private readonly ILogger<EmailSenderService> _logger;
-        private readonly IBlobStorageService _blobStorageService;
         public EmailSenderService(ILogger<EmailSenderService> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

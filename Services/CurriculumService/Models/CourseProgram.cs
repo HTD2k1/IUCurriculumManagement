@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurriculumService.Models;
 
-[Keyless]
 [Table("course_program")]
 [Index("CourseTypeId", Name = "FK_CourseProgram_CourseType")]
 [Index("ProgramId", Name = "FK_CourseProgram_Program")]
@@ -26,11 +25,11 @@ public partial class CourseProgram
     [Column("course_type_id")]
     public int CourseTypeId { get; set; }
     
-    [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public virtual Course? Course { get; set; }
-    [System.Text.Json.Serialization.JsonIgnore]
-    public virtual CourseType CourseType { get; set; } = null!;
-    [System.Text.Json.Serialization.JsonIgnore]
-    public virtual Program Program { get; set; } = null!;
+    // [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    // public virtual Course? Course { get; set; }
+    // [System.Text.Json.Serialization.JsonIgnore]
+    // public virtual CourseType? CourseType { get; set; } = null!;
+    // [System.Text.Json.Serialization.JsonIgnore]
+    // public virtual Program? Program { get; set; } = null!;
     
 }

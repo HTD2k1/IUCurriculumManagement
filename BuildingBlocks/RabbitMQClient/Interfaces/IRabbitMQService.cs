@@ -12,9 +12,6 @@ namespace RabbitMQService.Interfaces
     {
         public void PublishCurriculumEvent(CurriculumEvent @event);
         public void BasicPublishMessage(string message, string exChangeName, string queueName, IBasicProperties properties=null);
-
-        //public void PublishEvent(IEvent @event);    
-        //public void ConsumeEvent(IEvent @event);
         public Task RegisterConsumer();
     }
 }

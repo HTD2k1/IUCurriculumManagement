@@ -18,61 +18,64 @@ namespace CurriculumService.Services
     public class SemesterCurriculumVerifierService: IMessageProcessor
     {      
         private readonly ILogger<SemesterCurriculumVerifierService> _logger;
-        private readonly IBlobStorageService _blobStorageService;
-        private readonly IuCurriculumContext _curriculumContext;
-        private readonly RabbitMQService.RabbitMQPublishService _rabbitMQPublishService;
-        public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger, IBlobStorageService blobStorageService, IuCurriculumContext curriculumContext)
+        private readonly IServiceScopeFactory _scopeFactory;
+        public SemesterCurriculumVerifierService(ILogger<SemesterCurriculumVerifierService> logger, IServiceScopeFactory scopeFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _blobStorageService = blobStorageService ?? throw new ArgumentNullException(nameof(blobStorageService));
-            _curriculumContext = curriculumContext ?? throw new ArgumentNullException(nameof(curriculumContext));
+            _scopeFactory = scopeFactory;
         }
         public async Task ProcessMessageAsync(string message)
         {
-            try
-            {
-                var emailContent = "";
-                var curriculumEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
-                if (curriculumEvent == null) throw new JsonReaderException("Unsupported format");
-                var stream = await _blobStorageService.DownloadAzureBlobStreamingAsync(curriculumEvent.Payload);
-                switch (Path.GetExtension(curriculumEvent.Payload))
-                {
-                    case ".csv":
-                        var records = CSVHandler(stream);
-                        var recordIds = records.Select(x => x.course_id).ToList(); 
-                        var courses = _curriculumContext.Courses.Where(x => recordIds.Contains(x.Id)).ToList();
-                        if (ValidateNewCurriculum(courses))
-                        {
-                            _logger.LogInformation("=== SUCCESSFULLY VALIDATE NEW CURRICULUM");
-                             emailContent = GenerateEmailMessages();
-                            var factory = new ConnectionFactory
+            try{
+                using (var scope = _scopeFactory.CreateScope())
+                {   
+                    
+                    // Get required services
+                    var curriculumContext = scope.ServiceProvider.GetRequiredService<IuCurriculumContext>();
+                    var blobStorageService = scope.ServiceProvider.GetRequiredService<IBlobStorageService>();
+                    var emailContent = "";
+                    var curriculumEvent = JsonConvert.DeserializeObject<CurriculumEvent>(message);
+                    if (curriculumEvent == null) throw new JsonReaderException("Unsupported format");
+                    var stream = await blobStorageService.DownloadAzureBlobStreamingAsync(curriculumEvent.Payload);
+                    switch (Path.GetExtension(curriculumEvent.Payload))
+                    {
+                        case ".csv":
+                            var records = CSVHandler(stream);
+                            var recordIds = records.Select(x => x.course_id).ToList();
+                            var courses = curriculumContext.Courses.Where(x => recordIds.Contains(x.Id)).ToList();
+                            if (ValidateNewCurriculum(courses))
                             {
-                                HostName = "localhost",
-                                Port = 5672,
-                                UserName = "guest",
-                                Password = "guest"
-                            };
-                            var connection = factory.CreateConnection("temporary");
-                            var channel = connection.CreateModel();
-                            channel.BasicPublish(exchange: string.Empty,
-                              routingKey: "curriculum-notify",
-                            basicProperties: null,
-                              body: Encoding.UTF8.GetBytes(emailContent));
-                        }
-                        break;
-                    default:
-                        throw new FileFormatException("Unsupport file type for curriculum processing");
+                                _logger.LogInformation("=== SUCCESSFULLY VALIDATE NEW CURRICULUM");
+                                emailContent = GenerateEmailMessages(courses);
+                                NotifyEmailSender(emailContent);
+                            }
+
+                            break;
+                        default:
+                            throw new FileFormatException("Unsupport file type for curriculum processing");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
             }
-
         }
-        private void ValidateCourses()
+        private void NotifyEmailSender(string emailContent)
         {
-            throw new NotImplementedException();
+            var factory = new ConnectionFactory
+            {
+                HostName = "localhost",
+                Port = 5672,
+                UserName = "guest",
+                Password = "guest"
+            };
+            var connection = factory.CreateConnection("temporary");
+            var channel = connection.CreateModel();
+            channel.BasicPublish(exchange: string.Empty,
+                routingKey: "curriculum-notify",
+                basicProperties: null,
+                body: Encoding.UTF8.GetBytes(emailContent));
         }
         private void DocumentHandler()
         {   
@@ -100,7 +103,7 @@ namespace CurriculumService.Services
             _logger.LogInformation("[DONE] Completed all validation rules for all courses");
             return true;
         }
-        private string GenerateEmailMessages()
+        private string GenerateEmailMessages( List<Course>? courses)
         {
             var validationString1 = "[DONE] Completed content completeness check for all courses <br>";
             var validationString2= "[DONE] Completed educational standards alignment check for all courses <br>";

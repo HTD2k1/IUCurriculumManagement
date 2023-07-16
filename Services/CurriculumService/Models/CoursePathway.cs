@@ -27,13 +27,13 @@ public partial class CoursePathway
 
     [Column("year")]
     public int Year { get; set; }
-
-    [ForeignKey("CourseId")]
-    public virtual Course Course { get; set; } = null!;
-
-    [ForeignKey("PathwayId")]
-    public virtual Pathway Pathway { get; set; } = null!;
-
-    [ForeignKey("ProgramId")]
-    public virtual Program Program { get; set; } = null!;
+    //
+    // [ForeignKey("CourseId")]
+    // public virtual Course Course { get; set; } = null!;
+    //
+    // [ForeignKey("PathwayId")]
+    // public virtual Pathway Pathway { get; set; } = null!;
+    //
+    // [ForeignKey("ProgramId")]
+    // public virtual Program Program { get; set; } = null!;
 }

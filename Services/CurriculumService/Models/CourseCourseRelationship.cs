@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurriculumService.Models;
 
-[Keyless]
+
 [Table("course_course_relationship")]
 [Index("RelationshipId", Name = "CourseCourse_CourseRelationship")]
 [Index("CourseId2", Name = "FKCourse_Course2")]

@@ -22,6 +22,6 @@ public partial class Documentary
     [Column("id")]
     public int Id { get; set; }
 
-    [InverseProperty("Document")]
-    public virtual ICollection<ProgramDocument> ProgramDocuments { get; } = new List<ProgramDocument>();
+    // [InverseProperty("Document")]
+    // public virtual ICollection<ProgramDocument> ProgramDocuments { get; } = new List<ProgramDocument>();
 }
