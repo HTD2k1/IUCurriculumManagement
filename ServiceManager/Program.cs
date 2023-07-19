@@ -10,7 +10,6 @@ namespace ServiceManager
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             builder.Services.AddAuthorization();
             builder.Services.AddDbContext<ServiceContext>(ServiceLifetime.Singleton);
@@ -41,11 +40,10 @@ namespace ServiceManager
             })
             .WithName("GetMicroservicesStatus");
 
-            app.MapPost("/add-service-status", (HttpContext httpContext, ServiceContext serviceContext, [FromBody] string content, ILogger<Program> logger ) =>
+            app.MapPost("/add-service-status", (HttpContext httpContext, ServiceContext serviceContext, [FromBody] MicroService microservice , ILogger<Program> logger ) =>
             {
                 try
                 {
-                    var microservice = JsonConvert.DeserializeObject<MicroService>(content);
                     var existingMicroService = serviceContext.MicroServices.FirstOrDefault(x => x.Id == microservice.Id);
                     if (existingMicroService == null)
                     {
